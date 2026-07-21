@@ -35,21 +35,38 @@ const HOTSPOTS: Record<string, { x: number; y: number }> = {
           aria-label="Технический разрез двигателя внутреннего сгорания с отмеченными узлами применения покрытия MODENGY">
           <defs>
             <!-- штриховка металла в разрезе -->
-            <pattern id="bp-hatch" width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
-              <line x1="0" y1="0" x2="0" y2="7" stroke="rgba(221,233,239,0.26)" stroke-width="1" />
+            <pattern id="bp-hatch" width="6" height="6" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="0" x2="0" y2="6" stroke="rgba(221,233,239,0.34)" stroke-width="1.1" />
             </pattern>
-            <!-- зона покрытия MODENGY -->
-            <pattern id="bp-coat" width="5" height="5" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
-              <line x1="0" y1="0" x2="0" y2="5" stroke="rgba(253,193,0,0.55)" stroke-width="1.4" />
-            </pattern>
+            <marker id="bp-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M0 1 L10 5 L0 9 z" fill="rgba(221,233,239,0.5)" />
+            </marker>
+            <marker id="bp-arr-b" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M10 1 L0 5 L10 9 z" fill="rgba(221,233,239,0.5)" />
+            </marker>
           </defs>
 
-          <!-- рамка чертежа -->
-          <rect x="8" y="8" width="544" height="624" class="bp-stroke" opacity="0.4" />
-          <line x1="8" y1="596" x2="552" y2="596" class="bp-stroke" opacity="0.4" />
-          <g font-family="Gilroy, sans-serif" font-size="10.5" fill="rgba(221,233,239,0.42)" letter-spacing="1.1">
-            <text x="24" y="618">MODENGY · РАЗРЕЗ ДВС · СХЕМА УЗЛОВ</text>
-            <text x="470" y="618">М 1:1</text>
+          <!-- рамка чертежа + штамп -->
+          <rect x="8" y="8" width="544" height="624" class="bp-stroke" opacity="0.45" stroke-width="1.8" />
+          <g class="bp-stroke" opacity="0.45">
+            <path d="M320 566 H544 M320 566 V632 M320 588 H544 M320 610 H544 M432 610 V632" />
+          </g>
+          <g font-family="Gilroy, sans-serif" fill="rgba(221,233,239,0.5)" letter-spacing="1">
+            <text x="332" y="581" font-size="11" font-weight="600">MODENGY®</text>
+            <text x="332" y="603" font-size="10">РАЗРЕЗ ДВС · СХЕМА УЗЛОВ</text>
+            <text x="332" y="625" font-size="10">М 1:1</text>
+            <text x="444" y="625" font-size="10">ЛИСТ 1</text>
+          </g>
+          <!-- легенда -->
+          <g font-family="Gilroy, sans-serif" font-size="10" letter-spacing="0.8">
+            <line x1="26" y1="596" x2="52" y2="596" stroke="#fdc100" stroke-width="4" stroke-linecap="round" />
+            <text x="62" y="600" fill="rgba(221,233,239,0.55)">— ЗОНЫ НАНЕСЕНИЯ ПОКРЫТИЯ</text>
+          </g>
+
+          <!-- осевые линии (штрихпунктир) -->
+          <g stroke="rgba(221,233,239,0.28)" stroke-width="1" stroke-dasharray="14 4 3 4" fill="none">
+            <line x1="271" y1="60" x2="271" y2="556" />
+            <line x1="120" y1="494" x2="524" y2="494" />
           </g>
 
           <!-- ================= ВПУСК + ДРОССЕЛЬНАЯ ЗАСЛОНКА ================= -->
@@ -107,27 +124,39 @@ const HOTSPOTS: Record<string, { x: number; y: number }> = {
 
           <!-- ================= ПОРШЕНЬ ================= -->
           <g class="bp-part" data-part="porshni">
-            <!-- днище + канавки колец -->
-            <path class="bp-stroke" d="M199 232 H343 V262 H199 Z" fill="url(#bp-hatch)" />
-            <path class="bp-stroke" d="M199 268 H343 M199 276 H343 M199 284 H343" />
-            <!-- юбка (зона покрытия) -->
-            <path d="M199 288 H343 V352 q-72 14 -144 0 Z" fill="url(#bp-coat)" stroke="#fdc100" stroke-width="1.6" />
+            <!-- корпус поршня в разрезе -->
+            <path class="bp-stroke" stroke-width="1.7" fill="url(#bp-hatch)"
+              d="M199 232 H343 V344 q-14 10 -30 10 H229 q-16 0 -30 -10 Z" />
+            <!-- канавки поршневых колец -->
+            <path class="bp-stroke" d="M199 262 H343 M199 270 H343 M199 278 H343 M199 286 H343" />
             <!-- бобышка и палец -->
-            <circle class="bp-stroke" cx="271" cy="300" r="17" fill="#0e1a20" />
-            <circle class="bp-stroke" cx="271" cy="300" r="9" />
+            <circle class="bp-stroke" cx="271" cy="304" r="18" fill="#0e1a20" stroke-width="1.6" />
+            <circle class="bp-stroke" cx="271" cy="304" r="9" />
+            <!-- ПОКРЫТИЕ на юбке: тонкий слой по боковым поверхностям -->
+            <path stroke="#fdc100" stroke-width="4" fill="none" stroke-linecap="round"
+              d="M197 292 V342 M345 292 V342" />
+          </g>
+
+          <!-- размер толщины плёнки -->
+          <g stroke="rgba(221,233,239,0.4)" stroke-width="1" fill="none">
+            <line x1="197" y1="366" x2="197" y2="380" />
+            <line x1="345" y1="366" x2="345" y2="380" />
+            <line x1="150" y1="374" x2="193" y2="374" marker-end="url(#bp-arr)" />
+            <line x1="349" y1="374" x2="392" y2="374" marker-end="url(#bp-arr)" />
           </g>
 
           <!-- ================= ШАТУН + ВКЛАДЫШИ ================= -->
           <g class="bp-part" data-part="vkladyshi">
-            <!-- стержень (двутавр) -->
-            <path class="bp-stroke" d="M259 316 L253 386 M283 316 L289 386" />
-            <path class="bp-stroke" opacity="0.45" d="M266 322 L262 384 M276 322 L280 384" />
-            <!-- нижняя головка + вкладыш -->
-            <circle class="bp-stroke" cx="271" cy="408" r="34" fill="#0e1a20" />
-            <circle cx="271" cy="408" r="26" fill="none" stroke="#fdc100" stroke-width="4" opacity="0.9" />
-            <circle class="bp-stroke" cx="271" cy="408" r="21" />
-            <!-- крышка шатуна -->
-            <path class="bp-stroke" opacity="0.6" d="M237 408 H305" />
+            <!-- стержень-двутавр -->
+            <path class="bp-stroke" stroke-width="1.7" d="M256 320 L250 384 M286 320 L292 384" />
+            <path class="bp-stroke" opacity="0.4" d="M265 324 L261 382 M277 324 L281 382" />
+            <!-- нижняя головка -->
+            <circle class="bp-stroke" cx="271" cy="408" r="34" fill="url(#bp-hatch)" stroke-width="1.7" />
+            <circle class="bp-stroke" cx="271" cy="408" r="21" fill="#0e1a20" />
+            <!-- ПОКРЫТИЕ: вкладыш -->
+            <circle cx="271" cy="408" r="26" fill="none" stroke="#fdc100" stroke-width="4.5" />
+            <!-- разъём крышки шатуна -->
+            <path class="bp-stroke" opacity="0.55" d="M237 408 H250 M292 408 H305" />
           </g>
 
           <!-- ================= КОЛЕНВАЛ ================= -->
@@ -150,16 +179,15 @@ const HOTSPOTS: Record<string, { x: number; y: number }> = {
           <line class="bp-stroke" x1="176" y1="530" x2="366" y2="530" stroke-dasharray="7 5" opacity="0.55" />
 
           <!-- ================= ВЫНОСКИ ================= -->
-          <g font-family="Gilroy, sans-serif" font-size="11" letter-spacing="0.6">
-            <path class="callout-line" d="M343 320 H432" />
-            <circle class="callout-dot" cx="343" cy="320" r="2.6" />
-            <text x="438" y="324" fill="rgba(221,233,239,0.55)">ЮБКА · 15–25 МКМ</text>
-            <path class="callout-line" d="M305 424 H432" />
+          <g font-family="Gilroy, sans-serif" font-size="10.5" letter-spacing="0.6" fill="rgba(221,233,239,0.6)">
+            <text x="398" y="378">ПЛЁНКА 15–25 МКМ</text>
+            <text x="146" y="378" text-anchor="end">ЮБКА ПОРШНЯ</text>
+            <path class="callout-line" d="M305 424 H414" />
             <circle class="callout-dot" cx="305" cy="424" r="2.6" />
-            <text x="438" y="428" fill="rgba(221,233,239,0.55)">MoS₂ + ГРАФИТ</text>
-            <path class="callout-line" d="M330 131 H432" />
+            <text x="420" y="428">ВКЛАДЫШ · MoS₂</text>
+            <path class="callout-line" d="M330 131 H414" />
             <circle class="callout-dot" cx="330" cy="131" r="2.6" />
-            <text x="438" y="135" fill="rgba(221,233,239,0.55)">ШТОК КЛАПАНА</text>
+            <text x="420" y="135">ШТОК КЛАПАНА</text>
           </g>
 
           <!-- хотспоты -->
