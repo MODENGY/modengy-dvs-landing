@@ -23,30 +23,14 @@ const HOTSPOTS: Record<string, { x: number; y: number }> = {
 <section id="applications" class="blueprint-grid grain relative overflow-hidden bg-bg0 py-24 text-white md:py-32">
   <div class="relative mx-auto max-w-[1280px] px-5 md:px-8">
     <span class="sec-tag sec-tag--dark" data-reveal>Применение</span>
-    <h2 class="mt-5 max-w-3xl text-[clamp(28px,3.4vw,44px)]" data-split>Где применяется в двигателе</h2>
+    <h2 class="mt-5 max-w-3xl text-[clamp(28px,3.4vw,44px)]" data-reveal>Где применяется в двигателе</h2>
     <p class="mt-4 max-w-xl text-mutd" data-reveal>
-      Покрутите настоящий 3D-двигатель. Жёлтая точка — узел, где работает покрытие: клик — переход к подбору.
+      Наведите на точку чертежа или карточку узла. Клик — переход к подбору покрытия под этот узел.
     </p>
 
     <div class="mt-14 grid items-start gap-12 lg:grid-cols-[1.15fr_1fr]" data-blueprint>
-      <!-- 3D-ДВИГАТЕЛЬ (desktop) -->
-      <div data-engine3d-wrap class="relative hidden select-none lg:block" data-reveal="left">
-        <canvas data-engine3d class="aspect-[4/3] w-full cursor-grab active:cursor-grabbing"></canvas>
-        {applications.map((a) => (
-          <a href="#quiz" data-spot3d={a.slug} aria-label={a.title}
-            class="spot3d group absolute z-10 -translate-x-1/2 -translate-y-1/2 opacity-0">
-            <span class="halo3d"></span>
-            <span class="core3d"></span>
-            <span class="lbl3d">{a.title}</span>
-          </a>
-        ))}
-        <div class="pointer-events-none absolute bottom-2 left-2 font-mono text-[10.5px] uppercase tracking-[0.1em] text-white/35">
-          MODENGY · ДВС · 3D — потяните, чтобы повернуть
-        </div>
-      </div>
-
-      <!-- ЧЕРТЁЖ (мобайл-фолбэк) -->
-      <figure class="relative lg:hidden" data-reveal>
+      <!-- ЧЕРТЁЖ -->
+      <figure class="relative" data-reveal>
         <svg viewBox="0 0 520 600" class="w-full" role="img" aria-label="Упрощённый чертёж-разрез двигателя с отмеченными узлами применения покрытия">
           <!-- рамка чертежа + штамп -->
           <rect x="6" y="6" width="508" height="588" class="bp-stroke" opacity="0.5" />
@@ -150,31 +134,3 @@ const HOTSPOTS: Record<string, { x: number; y: number }> = {
     </div>
   </div>
 </section>
-
-<style>
-  .spot3d { transition: opacity .25s ease; }
-  .core3d {
-    display: block; width: 13px; height: 13px; border-radius: 999px;
-    background: #ffb400; box-shadow: 0 0 12px rgba(255,180,0,.9);
-    transition: transform .2s ease;
-  }
-  .spot3d:hover .core3d, .spot3d.lit .core3d { transform: scale(1.35); }
-  .halo3d {
-    position: absolute; inset: -9px; border-radius: 999px;
-    border: 1.5px solid rgba(255,180,0,.55);
-    animation: spot-pulse 2s ease-out infinite;
-  }
-  @keyframes spot-pulse {
-    0% { transform: scale(.6); opacity: 1; }
-    100% { transform: scale(1.6); opacity: 0; }
-  }
-  .lbl3d {
-    position: absolute; left: 50%; top: -30px; transform: translateX(-50%);
-    white-space: nowrap; padding: 3px 9px; border-radius: 8px;
-    background: rgba(11,12,14,.92); border: 1px solid rgba(255,180,0,.5);
-    font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .06em;
-    text-transform: uppercase; color: #ffb400;
-    opacity: 0; transition: opacity .2s ease; pointer-events: none;
-  }
-  .spot3d:hover .lbl3d, .spot3d.lit .lbl3d { opacity: 1; }
-</style>

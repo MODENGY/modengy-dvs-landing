@@ -66,8 +66,7 @@ const effectCards = [
 
   <!-- ======================= HERO ======================= -->
   <section class="blueprint-grid grain relative overflow-hidden bg-bg0 pt-[var(--header-h)] text-white">
-    <canvas data-particles class="pointer-events-none absolute inset-0 z-0 hidden lg:block" aria-hidden="true"></canvas>
-    <div data-hero-glow class="glow-soft absolute right-[6%] top-1/3 h-[480px] w-[480px]"></div>
+    <div class="glow-soft absolute right-[6%] top-1/3 h-[480px] w-[480px]"></div>
 
     <div class="relative mx-auto grid max-w-[1280px] items-center gap-12 px-5 pb-24 pt-12 md:grid-cols-2 md:px-8 md:pb-28 md:pt-16">
       <div>
@@ -84,7 +83,7 @@ const effectCards = [
         <p data-hero-item class="mt-6 max-w-xl text-[17px] leading-relaxed text-mutd md:text-lg">{dvs.hero.sub}</p>
 
         <div data-hero-item class="mt-8 flex flex-col gap-3.5 sm:flex-row">
-          <a href="#quiz" data-magnetic class="btn-accent group inline-flex items-center justify-center gap-2 px-7 py-4">
+          <a href="#quiz" class="btn-accent group inline-flex items-center justify-center gap-2 px-7 py-4">
             Подобрать покрытие за 5 секунд
             <span class="transition-transform group-hover:translate-x-1"><Icon name="arrow-right" size={17} /></span>
           </a>
@@ -109,21 +108,14 @@ const effectCards = [
 
       <!-- Баллон + чертёжные выноски -->
       <div class="relative mx-auto w-full max-w-[560px]">
-        <div data-hero-spray aria-hidden="true"
-          class="pointer-events-none absolute right-[24%] top-[2%] z-0 h-44 w-44 rounded-full opacity-0"
-          style="background:radial-gradient(circle,rgba(255,180,0,.4),transparent 62%);filter:blur(20px)"></div>
-
-        <div data-hero-media class="relative z-10 mx-auto max-w-[420px]">
+        <div class="relative z-10 mx-auto max-w-[420px]">
           <img
-            data-hero-img
             src={img('hero-1.png')}
             alt="Аэрозоль MODENGY 210 мл — антифрикционное твердосмазочное покрытие для деталей ДВС"
             width="420" height="404"
             fetchpriority="high" decoding="async"
             class="w-full drop-shadow-2xl"
           />
-          <!-- живой 3D-баллон: зацикленно крутится и парит, подменяет картинку после загрузки -->
-          <canvas data-hero-can3d class="pointer-events-none absolute -inset-6 h-[calc(100%+48px)] w-[calc(100%+48px)] opacity-0"></canvas>
         </div>
 
         <!-- выноски: рисуются при загрузке -->
@@ -156,79 +148,40 @@ const effectCards = [
     </div>
   </section>
 
-  <!-- ======================= КЕЙСЫ: ДО/ПОСЛЕ + ЛЕТЯЩИЙ БАЛЛОН ======================= -->
-  <Cases cases={dvs.cases} base={base} />
-
-
-  <!-- ======================= ПАСПОРТ ПОКРЫТИЯ ======================= -->
-  <section id="specs" class="blueprint-grid-l relative overflow-hidden bg-surface py-24 md:py-32">
-    <span class="sheet-index" aria-hidden="true">01</span>
-    <div class="relative mx-auto max-w-[1280px] px-5 md:px-8">
-      <span class="sec-tag" data-reveal>Паспорт покрытия</span>
-      <h2 class="mt-5 max-w-3xl text-[clamp(28px,3.4vw,44px)]" data-split>Инженерные показатели, а не обещания</h2>
-
-      <div class="mt-14 grid items-start gap-14 lg:grid-cols-[1fr_440px]">
-        <!-- строки техпаспорта -->
+  <!-- ======================= СОЦИАЛЬНОЕ ДОКАЗАТЕЛЬСТВО ======================= -->
+  <section class="border-b border-linel bg-surface py-10">
+    <div class="mx-auto grid max-w-[1280px] grid-cols-2 gap-8 px-5 md:px-8 lg:grid-cols-4">
+      <div class="flex items-center gap-4" data-reveal>
+        <div class="font-mono text-4xl font-medium text-ink">5.0</div>
         <div>
-          {passport.map((row, i) => (
-            <div class="grid grid-cols-[1fr_auto] items-baseline gap-6 border-b border-linel py-5" data-reveal>
-              <div>
-                <div class="font-medium text-ink">{row.param}</div>
-                <div class="mt-0.5 font-mono text-[12px] uppercase tracking-[0.06em] text-mutl">{row.note}</div>
-              </div>
-              <div class="text-right font-mono text-2xl font-medium text-ink md:text-3xl">{row.value}</div>
-            </div>
-          ))}
-          <p class="mt-4 font-mono text-[12px] uppercase tracking-[0.06em] text-mutl">
-            Значения зависят от марки · точные ТТХ — при подборе
-          </p>
+          <div class="flex gap-0.5 text-accent">
+            {Array.from({ length: 5 }).map(() => <Icon name="star" size={14} />)}
+          </div>
+          <div class="mt-1 text-[13px] text-mutl">105 отзывов · MyReviews</div>
         </div>
-
-        <!-- график трения (схема, рисуется на скролле) -->
-        <figure data-reveal class="rounded-[16px] border border-linel bg-bgl p-6 md:p-7">
-          <svg viewBox="0 0 420 240" fill="none" class="w-full" role="img" aria-label="Схема снижения коэффициента трения после нанесения покрытия">
-            <g stroke="#e4e7eb" stroke-width="1">
-              <line x1="30" y1="16" x2="30" y2="210" />
-              <line x1="30" y1="210" x2="405" y2="210" />
-              <line x1="30" y1="68" x2="405" y2="68" stroke-dasharray="3 5" />
-              <line x1="30" y1="176" x2="405" y2="176" stroke-dasharray="3 5" />
-            </g>
-            <path d="M30 52 C 130 48, 260 60, 400 55" stroke="#a0a7b1" stroke-width="2" stroke-dasharray="6 6" />
-            <path data-draw d="M30 60 C 150 66, 210 164, 400 178" stroke="#ffb400" stroke-width="3.5" stroke-linecap="round" />
-            <circle cx="400" cy="178" r="5" fill="#ffb400" />
-            <circle cx="400" cy="178" r="5" fill="#ffb400" class="chart-pulse" />
-            <g font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="0.5">
-              <text x="36" y="44" fill="#5a6472">μ БЕЗ ПОКРЫТИЯ</text>
-              <text x="222" y="150" fill="#14161a" font-weight="600">С ПОКРЫТИЕМ MODENGY</text>
-              <text x="342" y="205" fill="#b98500" font-weight="600">ДО 0,03</text>
-            </g>
-          </svg>
-          <figcaption class="mt-3 font-mono text-[11.5px] uppercase tracking-[0.06em] text-mutl">
-            Схема · коэффициент трения до и после нанесения
-          </figcaption>
-        </figure>
       </div>
-
-      <!-- 3D-коленвал: вращается вокруг горизонтальной оси (появится, когда придёт модель) -->
-      <div data-crank-wrap class="relative mx-auto mt-4 hidden aspect-[16/7] w-full max-w-[720px] lg:block">
-        <canvas data-crank3d class="h-full w-full cursor-grab active:cursor-grabbing"></canvas>
-        <div class="pointer-events-none absolute inset-x-0 bottom-1 text-center font-mono text-[10.5px] uppercase tracking-[0.1em] text-mutl">
-          Коленвал ДВС · вкладыши защищает MODENGY 1014 — потяните, чтобы повернуть
-        </div>
+      <div data-reveal>
+        <div class="font-mono text-4xl font-medium text-ink">15+</div>
+        <div class="mt-1 text-[13px] text-mutl">лет производства покрытий</div>
+      </div>
+      <div data-reveal>
+        <div class="font-mono text-4xl font-medium text-ink">12+</div>
+        <div class="mt-1 text-[13px] text-mutl">отраслей: от автопрома до атомной энергетики</div>
+      </div>
+      <div data-reveal>
+        <div class="font-mono text-4xl font-medium text-ink">ТУ</div>
+        <div class="mt-1 text-[13px] text-mutl">выпускается по ТУ, протоколы испытаний</div>
       </div>
     </div>
   </section>
+
 
   <!-- ======================= ПРОБЛЕМА ======================= -->
   <section id="problem" class="blueprint-grid-l relative overflow-hidden bg-bgl py-24 md:py-32">
     <span class="sheet-index" aria-hidden="true">02</span>
     <div class="relative mx-auto max-w-[1280px] px-5 md:px-8">
-      <!-- 3D-поршень: ходит вверх-вниз как в цилиндре (декор, десктоп) -->
-      <div class="pointer-events-none absolute -top-10 right-0 hidden h-[360px] w-[360px] lg:block" aria-hidden="true">
-        <canvas data-piston3d class="h-full w-full"></canvas>
-      </div>
       <span class="sec-tag" data-reveal>Проблема</span>
-      <h2 class="mt-5 max-w-2xl text-[clamp(28px,3.4vw,44px)]" data-split>Что «съедает» ресурс двигателя</h2>
+      <h2 class="mt-5 max-w-2xl text-[clamp(28px,3.4vw,44px)]" data-reveal>Что «съедает» ресурс двигателя</h2>
       <p class="mt-4 max-w-xl text-mutl" data-reveal>Там, где жидкая смазка не справляется, металл работает по металлу. Результат — задиры, износ и потеря мощности.</p>
 
       <!-- мобайл: свайп со snap; десктоп: сетка -->
@@ -249,7 +202,7 @@ const effectCards = [
     <div class="relative mx-auto grid max-w-[1280px] items-center gap-14 px-5 md:grid-cols-2 md:px-8">
       <div>
         <span class="sec-tag sec-tag--dark" data-reveal>Материал</span>
-        <h2 class="mt-5 text-[clamp(28px,3.4vw,44px)]" data-split>Сухая смазка, которая держится</h2>
+        <h2 class="mt-5 text-[clamp(28px,3.4vw,44px)]" data-reveal>Сухая смазка, которая держится</h2>
         <p class="mt-5 text-[16.5px] leading-relaxed text-mutd">{dvs.how.lead}</p>
 
         <!-- состав — чипы -->
@@ -260,7 +213,7 @@ const effectCards = [
         </div>
 
         <div class="mt-6 flex flex-wrap gap-3">
-          <a href="#quiz" data-magnetic class="btn-accent inline-flex items-center gap-2 px-6 py-3.5">
+          <a href="#quiz" class="btn-accent inline-flex items-center gap-2 px-6 py-3.5">
             Подобрать под узел <Icon name="arrow-right" size={16} />
           </a>
           <a href="https://modengy.ru/catalog/antifriktsionnye-tverdosmazochnye-pokrytiya/" target="_blank" rel="noopener"
@@ -293,8 +246,8 @@ const effectCards = [
               <g class="mos-layer" data-mos-i={i}>
                 <path
                   d={`M${60} ${180 - i * 26} l190 0 l40 -14 l-190 0 Z`}
-                  fill={i % 2 ? 'rgba(255,180,0,0.14)' : 'rgba(255,255,255,0.05)'}
-                  stroke={i % 2 ? 'rgba(255,180,0,0.55)' : 'rgba(255,255,255,0.22)'}
+                  fill={i % 2 ? 'rgba(253,193,0,0.14)' : 'rgba(255,255,255,0.05)'}
+                  stroke={i % 2 ? 'rgba(253,193,0,0.55)' : 'rgba(255,255,255,0.22)'}
                   stroke-width="1.2"
                 />
               </g>
@@ -305,16 +258,9 @@ const effectCards = [
           </svg>
         </figure>
 
-        <div data-mat-can-wrap class="relative mx-auto mt-6 hidden aspect-square w-full max-w-[440px] lg:block" data-reveal="right">
-          <div class="glow-soft absolute inset-x-0 -bottom-[10%] top-[22%] opacity-70"></div>
-          <canvas data-mat-can3d class="relative h-full w-full cursor-grab active:cursor-grabbing"></canvas>
-          <div class="pointer-events-none absolute inset-x-0 bottom-0 text-center font-mono text-[10.5px] uppercase tracking-[0.1em] text-white/40">
-            Потяните — покрутите баллон
-          </div>
-        </div>
-        <img data-fly="right" src={img('prod-dvs.png')} alt="Набор MODENGY для деталей ДВС"
-          loading="lazy" decoding="async" width="300" height="300"
-          class="mx-auto mt-8 w-full max-w-[300px] drop-shadow-2xl lg:hidden" />
+        <img src={img('prod-dvs.png')} alt="Набор MODENGY для деталей ДВС"
+          loading="lazy" decoding="async" width="300" height="300" data-reveal
+          class="mx-auto mt-8 w-full max-w-[300px] drop-shadow-2xl" />
       </div>
     </div>
 
@@ -330,6 +276,54 @@ const effectCards = [
     </div>
   </section>
 
+  <!-- ======================= ПАСПОРТ ПОКРЫТИЯ ======================= -->
+  <section id="specs" class="blueprint-grid-l relative overflow-hidden bg-surface py-24 md:py-32">
+    <span class="sheet-index" aria-hidden="true">01</span>
+    <div class="relative mx-auto max-w-[1280px] px-5 md:px-8">
+      <span class="sec-tag" data-reveal>Паспорт покрытия</span>
+      <h2 class="mt-5 max-w-3xl text-[clamp(28px,3.4vw,44px)]" data-reveal>Инженерные показатели, а не обещания</h2>
+
+      <div class="mt-14 grid items-start gap-14 lg:grid-cols-[1fr_440px]">
+        <div>
+          {passport.map((row) => (
+            <div class="grid grid-cols-[1fr_auto] items-baseline gap-6 border-b border-linel py-5" data-reveal>
+              <div>
+                <div class="font-medium text-ink">{row.param}</div>
+                <div class="mt-0.5 font-mono text-[12px] uppercase tracking-[0.06em] text-mutl">{row.note}</div>
+              </div>
+              <div class="text-right font-mono text-2xl font-medium text-ink md:text-3xl">{row.value}</div>
+            </div>
+          ))}
+          <p class="mt-4 font-mono text-[12px] uppercase tracking-[0.06em] text-mutl">
+            Значения зависят от марки · точные ТТХ — при подборе
+          </p>
+        </div>
+
+        <figure data-reveal class="rounded-[16px] border border-linel bg-bgl p-6 md:p-7">
+          <svg viewBox="0 0 420 240" fill="none" class="w-full" role="img" aria-label="Схема снижения коэффициента трения после нанесения покрытия">
+            <g stroke="#e4e7eb" stroke-width="1">
+              <line x1="30" y1="16" x2="30" y2="210" />
+              <line x1="30" y1="210" x2="405" y2="210" />
+              <line x1="30" y1="68" x2="405" y2="68" stroke-dasharray="3 5" />
+              <line x1="30" y1="176" x2="405" y2="176" stroke-dasharray="3 5" />
+            </g>
+            <path d="M30 52 C 130 48, 260 60, 400 55" stroke="#a0a7b1" stroke-width="2" stroke-dasharray="6 6" />
+            <path d="M30 60 C 150 66, 210 164, 400 178" stroke="#fdc100" stroke-width="3.5" stroke-linecap="round" />
+            <circle cx="400" cy="178" r="5" fill="#fdc100" />
+            <g font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="0.5">
+              <text x="36" y="44" fill="#5a6472">μ БЕЗ ПОКРЫТИЯ</text>
+              <text x="222" y="150" fill="#14161a" font-weight="600">С ПОКРЫТИЕМ MODENGY</text>
+              <text x="342" y="205" fill="#b98500" font-weight="600">ДО 0,03</text>
+            </g>
+          </svg>
+          <figcaption class="mt-3 font-mono text-[11.5px] uppercase tracking-[0.06em] text-mutl">
+            Схема · коэффициент трения до и после нанесения
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
   <!-- ======================= ПРИМЕНЕНИЕ: ЧЕРТЁЖ (SIGNATURE) ======================= -->
   <Blueprint applications={dvs.applications} base={base} />
 
@@ -340,7 +334,7 @@ const effectCards = [
     <span class="sheet-index" aria-hidden="true">05</span>
     <div class="relative mx-auto max-w-[1280px] px-5 md:px-8">
       <span class="sec-tag" data-reveal>Производитель</span>
-      <h2 class="mt-5 max-w-2xl text-[clamp(28px,3.4vw,44px)]" data-split>Почему покрытие берут у MODENGY</h2>
+      <h2 class="mt-5 max-w-2xl text-[clamp(28px,3.4vw,44px)]" data-reveal>Почему покрытие берут у MODENGY</h2>
       <p class="mt-4 max-w-xl text-mutl" data-reveal>Не перекупщики и не «гаражная» химия — производитель полного цикла с собственной наукой и испытаниями.</p>
 
       <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -370,9 +364,9 @@ const effectCards = [
                 <circle cx={12 + (i % 12) * 18} cy={12 + Math.floor(i / 12) * 22} r="1.3" />
               ))}
             </g>
-            <path d="M76 34 L118 86" stroke="#ffb400" stroke-width="1.2" stroke-dasharray="4 4" />
-            <circle cx="76" cy="34" r="4" fill="#ffb400" />
-            <circle cx="118" cy="86" r="4" fill="#ffb400" />
+            <path d="M76 34 L118 86" stroke="#fdc100" stroke-width="1.2" stroke-dasharray="4 4" />
+            <circle cx="76" cy="34" r="4" fill="#fdc100" />
+            <circle cx="118" cy="86" r="4" fill="#fdc100" />
             <g font-family="IBM Plex Mono, monospace" font-size="10" fill="#a0a7b1" letter-spacing="0.5">
               <text x="86" y="32">САНКТ-ПЕТЕРБУРГ · ФИЛИАЛ</text>
               <text x="128" y="90">БРЯНСК · ЗАВОД</text>
@@ -384,13 +378,6 @@ const effectCards = [
     </div>
   </section>
 
-  <!-- ======================= КИНЕТИЧЕСКАЯ СТРОКА (бежит бесконечно) ======================= -->
-  <div aria-hidden="true" class="overflow-hidden bg-bg0 py-8 md:py-10" data-marquee>
-    <div class="kinetic-line flex w-max whitespace-nowrap will-change-transform" data-marquee-track>
-      <span class="pr-12">ТРЕНИЕ <span class="kinetic-fill">0,03</span> ◆ MoS₂ + ГРАФИТ ◆ −180…+440 °C ◆&nbsp;</span>
-      <span class="pr-12">ТРЕНИЕ <span class="kinetic-fill">0,03</span> ◆ MoS₂ + ГРАФИТ ◆ −180…+440 °C ◆&nbsp;</span>
-    </div>
-  </div>
 
   <!-- ======================= ЛИНЕЙКА (КОНВЕЙЕР) ======================= -->
   <Conveyor products={['prod-1001.webp', 'prod-1014.webp', 'prod-1009.webp', 'prod-dvs.webp', 'prod-kit.webp']} />
@@ -400,7 +387,7 @@ const effectCards = [
     <span class="sheet-index" aria-hidden="true">07</span>
     <div class="relative mx-auto max-w-[1280px] px-5 md:px-8">
       <span class="sec-tag" data-reveal>Инструкция</span>
-      <h2 class="mt-5 max-w-3xl text-[clamp(28px,3.4vw,44px)]" data-split>Нанесение покрытия из аэрозольного баллона</h2>
+      <h2 class="mt-5 max-w-3xl text-[clamp(28px,3.4vw,44px)]" data-reveal>Нанесение покрытия из аэрозольного баллона</h2>
       <p class="mt-4 max-w-xl text-mutl" data-reveal>Шесть шагов — от подготовки поверхности до полного отверждения. Для серийных партий возможно промышленное нанесение и шеф-нанесение.</p>
 
       <div class="mt-14 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
@@ -423,7 +410,7 @@ const effectCards = [
         <p class="text-[15.5px] leading-relaxed text-ink">
           <strong class="font-semibold">Важно:</strong> хорошую адгезию гарантирует только фирменный <strong class="font-semibold">очиститель-активатор MODENGY</strong> — им обязательно подготавливают поверхность перед нанесением покрытия.
         </p>
-        <a href="#quiz" data-magnetic class="btn-accent shrink-0 whitespace-nowrap px-6 py-3.5 md:ml-auto">Заказать набор</a>
+        <a href="#quiz" class="btn-accent shrink-0 whitespace-nowrap px-6 py-3.5 md:ml-auto">Заказать набор</a>
       </div>
     </div>
   </section>
@@ -433,7 +420,7 @@ const effectCards = [
     <span class="sheet-index d" aria-hidden="true">08</span>
     <div class="relative mx-auto max-w-[1280px] px-5 md:px-8">
       <span class="sec-tag sec-tag--dark" data-reveal>Видео</span>
-      <h2 class="mt-5 max-w-3xl text-[clamp(28px,3.4vw,44px)]" data-split>Видеоинструкция по нанесению</h2>
+      <h2 class="mt-5 max-w-3xl text-[clamp(28px,3.4vw,44px)]" data-reveal>Видеоинструкция по нанесению</h2>
       <p class="mt-4 max-w-xl text-mutd" data-reveal>Как покрытие наносится на реальные детали двигателя — от набора до заводского применения.</p>
 
       <div class="mt-12 grid gap-6 lg:grid-cols-[1.5fr_1fr]">
@@ -470,7 +457,7 @@ const effectCards = [
   <section class="grain relative bg-bg0 py-24 text-white md:py-32">
     <div class="relative mx-auto max-w-[1280px] px-5 md:px-8">
       <span class="sec-tag sec-tag--dark" data-reveal>Сравнение</span>
-      <h2 class="mt-5 max-w-2xl text-[clamp(28px,3.4vw,44px)]" data-split>MODENGY против импортного аналога</h2>
+      <h2 class="mt-5 max-w-2xl text-[clamp(28px,3.4vw,44px)]" data-reveal>MODENGY против импортного аналога</h2>
 
       <div class="mt-12 overflow-x-auto" data-reveal>
         <table class="w-full min-w-[640px] border-collapse text-left">
@@ -515,13 +502,16 @@ const effectCards = [
     </div>
   </section>
 
+  <!-- ======================= КЕЙСЫ: ДО/ПОСЛЕ ======================= -->
+  <Cases cases={dvs.cases} base={base} />
+
   <!-- ======================= ОТЗЫВЫ ======================= -->
   <section id="reviews" class="blueprint-grid-l relative overflow-hidden bg-surface py-24 md:py-32">
     <span class="sheet-index" aria-hidden="true">09</span>
     <div class="relative mx-auto max-w-[1280px] px-5 md:px-8">
       <span class="sec-tag" data-reveal>Отзывы</span>
       <div class="flex flex-wrap items-end justify-between gap-6">
-        <h2 class="mt-5 max-w-2xl text-[clamp(28px,3.4vw,44px)]" data-split>Что говорят механики и инженеры</h2>
+        <h2 class="mt-5 max-w-2xl text-[clamp(28px,3.4vw,44px)]" data-reveal>Что говорят механики и инженеры</h2>
         <div class="flex items-center gap-4" data-reveal>
           <div class="font-mono text-5xl font-medium text-ink">5.0</div>
           <div>
@@ -555,15 +545,12 @@ const effectCards = [
     </div>
   </section>
 
-  <!-- ======================= САМОПОДБОР ПОКРЫТИЯ ======================= -->
-  <Quiz steps={dvs.quiz.steps} catalogUrl={dvs.quiz.catalogUrl} />
-
   <!-- ======================= FAQ ======================= -->
   <section class="blueprint-grid-l relative overflow-hidden bg-surface py-24 md:py-32">
     <span class="sheet-index" aria-hidden="true">10</span>
     <div class="relative mx-auto max-w-3xl px-5 md:px-8">
       <span class="sec-tag" data-reveal>Вопросы</span>
-      <h2 class="mt-5 text-[clamp(28px,3.4vw,44px)]" data-split>Частые вопросы</h2>
+      <h2 class="mt-5 text-[clamp(28px,3.4vw,44px)]" data-reveal>Частые вопросы</h2>
       <div class="mt-10 divide-y divide-linel border-y border-linel">
         {dvs.faq.map((f) => (
           <details class="group py-5" data-reveal>
@@ -584,10 +571,10 @@ const effectCards = [
   <section class="blueprint-grid grain relative overflow-hidden bg-bg0 py-24 text-center text-white md:py-32">
     <div class="glow-soft absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2"></div>
     <div class="relative mx-auto max-w-2xl px-5 md:px-8">
-      <h2 class="text-[clamp(30px,4vw,52px)]" data-split>Подберите покрытие под ваш двигатель</h2>
+      <h2 class="text-[clamp(30px,4vw,52px)]" data-reveal>Подберите покрытие под ваш двигатель</h2>
       <p class="mt-5 text-mutd" data-reveal>Подбор за 5 секунд — сразу увидите марку MODENGY под ваш узел, без заявок и звонков.</p>
       <div class="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row" data-reveal>
-        <a href="#quiz" data-magnetic class="btn-accent inline-flex items-center gap-2 px-8 py-4">
+        <a href="#quiz" class="btn-accent inline-flex items-center gap-2 px-8 py-4">
           Получить подбор <Icon name="arrow-right" size={17} />
         </a>
         <a href={dvs.phoneHref} class="font-mono text-[15px] text-white/85 transition-colors hover:text-accent">{dvs.phone}</a>
@@ -595,12 +582,15 @@ const effectCards = [
     </div>
   </section>
 
+  <!-- ======================= САМОПОДБОР ПОКРЫТИЯ (финальное действие) ======================= -->
+  <Quiz steps={dvs.quiz.steps} catalogUrl={dvs.quiz.catalogUrl} />
+
   <!-- ======================= FOOTER ======================= -->
   <footer class="border-t border-lined bg-bg0 py-12 pb-24 text-mutd md:pb-12">
     <div class="mx-auto max-w-[1280px] px-5 md:px-8">
       <div class="flex flex-col justify-between gap-9 md:flex-row">
         <div>
-          <div class="font-display text-xl font-bold text-white">MODENGY<span class="text-accent">®</span></div>
+          <img src={`${base}img/logo-white.png`} alt="MODENGY" width="167" height="30" class="h-[30px] w-auto" />
           <p class="mt-3 max-w-sm text-[14px]">Технологии снижения трения. Антифрикционные твердосмазочные покрытия собственного производства.</p>
         </div>
         <div class="text-[14px]">
@@ -625,49 +615,27 @@ const effectCards = [
   <ReviewFloat />
 
   <style is:global>
-    /* Hover-выделение карточек — акцент без клика, почти везде */
+    /* Сдержанные hover-акценты карточек */
     #why .rounded-\[16px\],
     .card-heat,
     .card-d,
     section details {
-      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+      transition: border-color 0.25s ease, background-color 0.25s ease;
     }
     #why .rounded-\[16px\]:hover,
     .card-heat:hover,
     .card-d:hover {
-      transform: translateY(-5px);
-      border-color: rgba(255, 180, 0, 0.45);
-      box-shadow: 0 20px 48px -18px rgba(255, 180, 0, 0.18);
+      border-color: rgba(253,193,0, 0.4);
     }
-    /* строки паспорта и таблицы сравнения подсвечиваются */
-    #specs .border-b.border-linel:hover { background: rgba(255, 180, 0, 0.05); }
-    tbody tr { transition: background-color 0.25s ease; }
-    tbody tr:hover { background: rgba(255, 180, 0, 0.05); }
-    /* FAQ: плавное появление ответа */
-    section details:hover summary { color: #b98500; }
-    section details[open] > p {
-      animation: faq-in 0.38s ease both;
-    }
+    tbody tr { transition: background-color 0.2s ease; }
+    tbody tr:hover { background: rgba(253,193,0, 0.05); }
+    /* FAQ: мягкое появление ответа */
+    section details[open] > p { animation: faq-in 0.3s ease both; }
     @keyframes faq-in {
-      from { opacity: 0; transform: translateY(-8px); }
+      from { opacity: 0; transform: translateY(-6px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    /* температурная шкала «течёт» */
-    .temp-zone {
-      background: linear-gradient(90deg, rgba(255, 180, 0, 0.18), rgba(255, 180, 0, 0.5), rgba(255, 180, 0, 0.18));
-      background-size: 200% 100%;
-      animation: temp-flow 3s linear infinite;
-    }
-    @keyframes temp-flow { to { background-position: -200% 0; } }
-    /* мягкий пульс главных CTA-кнопок */
-    @keyframes cta-glow {
-      0%, 100% { box-shadow: 0 0 0 rgba(255, 180, 0, 0); }
-      50% { box-shadow: 0 0 26px rgba(255, 180, 0, 0.4); }
-    }
-    a[data-magnetic].btn-accent, [data-float-cta] { animation: cta-glow 3s ease-in-out infinite; }
-    @media (prefers-reduced-motion: reduce) {
-      .temp-zone { animation: none; }
-      a[data-magnetic].btn-accent, [data-float-cta] { animation: none; }
-    }
+    /* температурная шкала — статичная фирменная заливка */
+    .temp-zone { background: rgba(253,193,0, 0.35); }
   </style>
 </Base>

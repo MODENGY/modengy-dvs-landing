@@ -17,8 +17,8 @@ const anchors = [
 <!-- Хедер: всегда --bg-0, при скролле blur + тонкая линия (класс ставит JS) -->
 <header data-header class="fixed inset-x-0 top-0 z-50 bg-bg0 transition-shadow">
   <div class="mx-auto flex h-[var(--header-h)] max-w-[1280px] items-center justify-between px-5 md:px-8">
-    <a href="#top" class="font-display text-lg font-bold tracking-tight text-white">
-      MODENGY<span class="text-accent">®</span>
+    <a href="#top" class="block">
+      <img src={`${import.meta.env.BASE_URL}img/logo-white.png`} alt="MODENGY" width="150" height="27" class="h-[26px] w-auto" />
     </a>
 
     <nav class="hidden items-center gap-7 lg:flex" aria-label="Разделы страницы">
@@ -29,7 +29,7 @@ const anchors = [
 
     <div class="flex items-center gap-3 md:gap-5">
       <a href={phoneHref} class="hidden font-mono text-[14px] text-white/85 transition-colors hover:text-accent sm:block">{phone}</a>
-      <a href="#quiz" data-magnetic class="btn-accent inline-flex items-center gap-2 px-4 py-2 text-sm">
+      <a href="#quiz" class="btn-accent inline-flex items-center gap-2 px-4 py-2 text-sm">
         Подобрать покрытие
       </a>
     </div>
@@ -37,21 +37,10 @@ const anchors = [
   <div data-header-line class="h-px w-full bg-lined opacity-0 transition-opacity"></div>
   <!-- линия прогресса чтения -->
   <div class="pointer-events-none h-[2px] w-full">
-    <div data-rail-fill class="h-full w-0 bg-accent shadow-[0_0_8px_rgba(255,180,0,.6)]"></div>
+    <div data-rail-fill class="h-full w-0 bg-accent shadow-[0_0_8px_rgba(253,193,0,.6)]"></div>
   </div>
 </header>
 
-<!-- Интро-шторка: логотип + жёлтая линия, уезжает вверх (1 раз за сессию; логика в motion.ts) -->
-<div data-intro class="fixed inset-0 z-[999] flex items-center justify-center bg-bg0">
-  <div class="text-center">
-    <div class="font-display text-3xl font-bold tracking-tight text-white md:text-4xl">MODENGY<span class="text-accent">®</span></div>
-    <div class="mt-2 font-mono text-[11px] uppercase tracking-[0.18em] text-mutd">Технологии снижения трения</div>
-    <div class="mx-auto mt-5 h-[2px] w-44 overflow-hidden rounded bg-white/10">
-      <div data-intro-bar class="h-full w-0 bg-accent"></div>
-    </div>
-  </div>
-</div>
-<noscript><style>[data-intro] { display: none; }</style></noscript>
 
 <!-- Плавающий CTA (десктоп): появляется после 1.5 экрана, прячется у формы -->
 <a href="#quiz" data-float-cta class="float-cta btn-accent hidden items-center gap-2 px-5 py-3.5 text-sm shadow-xl md:inline-flex">

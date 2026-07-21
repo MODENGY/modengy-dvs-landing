@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+/* Корпоративный шрифт MODENGY (приложен заказчиком) */
+@font-face {
+  font-family: "Museo Sans Ex";
+  src: url("/promo/fonts/MuseoSansEx-500.ttf") format("truetype");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ============================================================
    MODENGY — дизайн-система «Живой чертёж»
    Ожившая техдокументация: чертёжные линии, mono-маркировки,
@@ -21,13 +30,13 @@
   --color-ink: #14161a;
   --color-mutl: #5a6472;
 
-  /* Единственный акцент */
-  --color-accent: #ffb400;
-  --color-accent-press: #e6a200;
+  /* Единственный акцент — фирменный жёлтый с корп-сайта modengy.ru */
+  --color-accent: #fdc100;
+  --color-accent-press: #e0ab00;
 
   /* Алиасы для существующей разметки (перекрашивают всё разом) */
-  --color-yellow: #ffb400;
-  --color-yellow-600: #e6a200;
+  --color-yellow: #fdc100;
+  --color-yellow-600: #e0ab00;
   --color-yellow-050: #fff7e0;
   --color-graphite: #0b0c0e;
   --color-graphite-600: #14161a;
@@ -37,11 +46,11 @@
   --color-mist: #f4f5f7;
   --color-line: #e4e7eb;
   --color-muted: #5a6472;
-  --color-teal: #ffb400; /* синий изгнан: всё, что было teal, становится жёлтым */
+  --color-teal: #fdc100;
 
-  /* Типографика */
-  --font-display: "Unbounded Variable", "Unbounded", system-ui, sans-serif;
-  --font-sans: "Onest Variable", "Onest", system-ui, sans-serif;
+  /* Типографика: корпоративные шрифты (Museo Sans — брендбук, Roboto — корп-сайт) */
+  --font-display: "Museo Sans Ex", "Roboto", system-ui, sans-serif;
+  --font-sans: "Roboto", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", monospace;
 
   /* Форма и движение */
@@ -65,10 +74,6 @@ html {
   -webkit-font-smoothing: antialiased;
 }
 
-html.lenis, html.lenis body { height: auto; }
-.lenis.lenis-smooth { scroll-behavior: auto !important; }
-.lenis.lenis-stopped { overflow: clip; }
-
 body {
   font-family: var(--font-sans);
   color: var(--color-ink);
@@ -78,16 +83,16 @@ body {
   overflow-x: clip;
 }
 
-/* Unbounded — только для H1/H2, сдержанно */
+/* Museo Sans — заголовки; Roboto — остальной текст */
 h1, h2 {
   font-family: var(--font-display);
-  font-weight: 650;
+  font-weight: 500;
   letter-spacing: -0.005em;
-  line-height: 1.08;
+  line-height: 1.12;
 }
 h3, h4 {
   font-family: var(--font-sans);
-  font-weight: 650;
+  font-weight: 700;
   letter-spacing: -0.01em;
   line-height: 1.2;
 }
@@ -201,7 +206,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 /* Тонкое жёлтое свечение за продуктом — аккуратное, без «грязного пятна» */
 .glow-soft {
   border-radius: 9999px;
-  background: radial-gradient(circle, rgba(255, 180, 0, 0.16) 0%, rgba(255, 180, 0, 0.05) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(253,193,0, 0.16) 0%, rgba(253,193,0, 0.05) 45%, transparent 70%);
   filter: blur(30px);
   pointer-events: none;
 }
@@ -214,7 +219,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   font-weight: 650;
   transition: background-color var(--dur-micro) ease-out, transform var(--dur-micro) ease-out, box-shadow var(--dur-micro) ease-out;
 }
-.btn-accent:hover { background: var(--color-accent-press); box-shadow: 0 8px 26px -8px rgba(255, 180, 0, 0.45); }
+.btn-accent:hover { background: var(--color-accent-press); box-shadow: 0 8px 26px -8px rgba(253,193,0, 0.45); }
 .btn-accent:active { transform: translateY(1px); }
 .btn-ghost-d {
   border: 1px solid var(--color-lined);
@@ -282,12 +287,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 /* ------------------------------------------------------------
    Стартовые состояния анимаций (только при активном JS)
    ------------------------------------------------------------ */
-html.js-ready [data-reveal] { opacity: 0; will-change: transform, opacity; }
-html.js-ready [data-img-reveal] { clip-path: inset(0 0 100% 0); will-change: clip-path; }
-html.js-ready [data-hero-item] { opacity: 0; }
-html.js-ready [data-hero-media] { opacity: 0; }
-html.js-ready [data-fly] { opacity: 0; }
-.fly-can { will-change: transform; }
+html.js-ready [data-reveal] { opacity: 0; }
 
 .line { display: block; overflow: hidden; }
 .line > * { display: inline-block; }
@@ -373,7 +373,7 @@ html.js-ready [data-fly] { opacity: 0; }
 .belt::after {
   content: "";
   position: absolute; inset: 0 0 auto 0; height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(255, 180, 0, 0.45), transparent);
+  background: linear-gradient(90deg, transparent, rgba(253,193,0, 0.45), transparent);
 }
 .belt-shadow {
   height: 10px;
@@ -410,14 +410,7 @@ html.js-ready [data-fly] { opacity: 0; }
    prefers-reduced-motion: всё статично и видимо
    ------------------------------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
-  html.js-ready [data-reveal],
-  html.js-ready [data-hero-item],
-  html.js-ready [data-hero-media],
-  html.js-ready [data-fly],
-  html.js-ready [data-case] { opacity: 1 !important; transform: none !important; }
-  html.js-ready [data-img-reveal] { clip-path: none !important; }
-  .fly-overlay { display: none !important; }
-  .cursor-dot, .cursor-ring { display: none; }
+  html.js-ready [data-reveal] { opacity: 1 !important; transform: none !important; }
   .chart-pulse, .bp-hotspot circle.halo { animation: none; }
   .kenburns, .mos-layer, .card-heat, .app-card { transition: none; }
 }
