@@ -104,7 +104,7 @@ const HOTSPOTS: Record<string, { x: number; y: number }> = {
             const p = HOTSPOTS[a.slug];
             if (!p) return null;
             return (
-              <a href="#quiz" class="bp-hotspot" data-hotspot={a.slug} aria-label={a.title}>
+              <a href="#buy" class="bp-hotspot" data-hotspot={a.slug} aria-label={a.title}>
                 <circle class="halo" cx={p.x} cy={p.y} r="9" />
                 <circle class="core" cx={p.x} cy={p.y} r="5" />
               </a>
@@ -116,7 +116,7 @@ const HOTSPOTS: Record<string, { x: number; y: number }> = {
       <!-- КАРТОЧКИ УЗЛОВ -->
       <div class="grid gap-3">
         {applications.map((a, i) => (
-          <a href="#quiz" data-app-card={a.slug} data-reveal
+          <a href="#buy" data-app-card={a.slug} data-reveal
             class="app-card group flex items-center gap-4 p-4">
             <img transition:name={`app-${a.slug}`} src={useImg(i)} alt={a.title} loading="lazy" decoding="async"
               width="56" height="56" class="kenburns h-14 w-14 shrink-0 rounded-full border border-lined object-cover" />

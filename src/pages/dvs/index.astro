@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Chrome from '../../components/Chrome.astro';
-import Quiz from '../../components/Quiz.astro';
+import BuyKit from '../../components/BuyKit.astro';
 import Conveyor from '../../components/Conveyor.astro';
 import Blueprint from '../../components/Blueprint.astro';
 import Icon from '../../components/Icon.astro';
@@ -57,7 +57,7 @@ const effectCards = [
 
 <Base
   title="Антифрикционное покрытие для деталей ДВС | MODENGY"
-  description="Твердосмазочное антифрикционное покрытие MODENGY для деталей ДВС: юбки поршней, вкладыши, дроссельные заслонки. Снижает трение, задиры и износ. Подбор за 1 рабочий день."
+  description="Твердосмазочное антифрикционное покрытие MODENGY для деталей ДВС: юбки поршней, вкладыши, дроссельные заслонки. Снижает трение, задиры и износ. Готовый набор — купить на маркетплейсах."
 >
   <link slot="head" rel="preload" as="image" href={img('hero-1.png')} fetchpriority="high" />
   <link slot="head" rel="preload" as="font" type="font/woff" href={`${base}fonts/Gilroy-Regular.woff`} crossorigin />
@@ -85,8 +85,8 @@ const effectCards = [
         <p data-hero-item class="mt-6 max-w-xl text-[17px] leading-relaxed text-mutd md:text-lg">{dvs.hero.sub}</p>
 
         <div data-hero-item class="mt-8 flex flex-col gap-3.5 sm:flex-row">
-          <a href="#quiz" class="btn-accent group inline-flex items-center justify-center gap-2 px-7 py-4">
-            Подобрать покрытие за 5 секунд
+          <a href="#buy" class="btn-accent group inline-flex items-center justify-center gap-2 px-7 py-4">
+            Купить набор
             <span class="transition-transform group-hover:translate-x-1"><Icon name="arrow-right" size={17} /></span>
           </a>
           <a href="#specs" class="btn-ghost-d inline-flex items-center justify-center px-7 py-4 font-medium">
@@ -215,8 +215,8 @@ const effectCards = [
         </div>
 
         <div class="mt-6 flex flex-wrap gap-3">
-          <a href="#quiz" class="btn-accent inline-flex items-center gap-2 px-6 py-3.5">
-            Подобрать под узел <Icon name="arrow-right" size={16} />
+          <a href="#buy" class="btn-accent inline-flex items-center gap-2 px-6 py-3.5">
+            Купить набор <Icon name="arrow-right" size={16} />
           </a>
           <a href="https://modengy.ru/catalog/antifriktsionnye-tverdosmazochnye-pokrytiya/" target="_blank" rel="noopener"
             class="btn-ghost-d inline-flex items-center gap-2 px-6 py-3.5 font-medium">
@@ -412,7 +412,7 @@ const effectCards = [
         <p class="text-[15.5px] leading-relaxed text-ink">
           <strong class="font-semibold">Важно:</strong> хорошую адгезию гарантирует только фирменный <strong class="font-semibold">очиститель-активатор MODENGY</strong> — им обязательно подготавливают поверхность перед нанесением покрытия.
         </p>
-        <a href="#quiz" class="btn-accent shrink-0 whitespace-nowrap px-6 py-3.5 md:ml-auto">Заказать набор</a>
+        <a href="#buy" class="btn-accent shrink-0 whitespace-nowrap px-6 py-3.5 md:ml-auto">Купить набор</a>
       </div>
     </div>
   </section>
@@ -574,18 +574,18 @@ const effectCards = [
     <div class="glow-soft absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2"></div>
     <div class="relative mx-auto max-w-2xl px-5 md:px-8">
       <h2 class="text-[clamp(30px,4vw,52px)]" data-reveal>Подберите покрытие под ваш двигатель</h2>
-      <p class="mt-5 text-mutd" data-reveal>Подбор за 5 секунд — сразу увидите марку MODENGY под ваш узел, без заявок и звонков.</p>
+      <p class="mt-5 text-mutd" data-reveal>Готовый набор: покрытие и очиститель-активатор. Доставка с маркетплейсов по всей России.</p>
       <div class="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row" data-reveal>
-        <a href="#quiz" class="btn-accent inline-flex items-center gap-2 px-8 py-4">
-          Получить подбор <Icon name="arrow-right" size={17} />
+        <a href="#buy" class="btn-accent inline-flex items-center gap-2 px-8 py-4">
+          Купить набор <Icon name="arrow-right" size={17} />
         </a>
         <a href={dvs.phoneHref} class="font-mono text-[15px] text-white/85 transition-colors hover:text-accent">{dvs.phone}</a>
       </div>
     </div>
   </section>
 
-  <!-- ======================= САМОПОДБОР ПОКРЫТИЯ (финальное действие) ======================= -->
-  <Quiz steps={dvs.quiz.steps} catalogUrl={dvs.quiz.catalogUrl} />
+  <!-- ======================= ПОКУПКА НАБОРА (финальное действие) ======================= -->
+  <BuyKit kit={dvs.kit} phone={dvs.phone} phoneHref={dvs.phoneHref} base={base} />
 
   <!-- ======================= FOOTER ======================= -->
   <footer class="border-t border-lined bg-bg0 py-12 pb-24 text-mutd md:pb-12">

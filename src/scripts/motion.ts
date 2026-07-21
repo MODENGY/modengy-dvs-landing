@@ -105,7 +105,7 @@ function buildFloatingCta() {
       apply();
     },
   });
-  const quiz = document.querySelector('#quiz');
+  const quiz = document.querySelector('#buy');
   if (quiz) {
     ScrollTrigger.create({
       trigger: quiz,

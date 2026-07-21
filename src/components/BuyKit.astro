@@ -1,0 +1,62 @@
+---
+/* ПОКУПКА НАБОРА — единственный продукт страницы.
+   Никакого авто-подбора марок: страница про покрытие для ДВС, продаётся готовый набор.
+   Все кнопки ведут на маркетплейсы. Нестандартные задачи — к инженеру по телефону. */
+import Icon from './Icon.astro';
+interface KitItem { t: string; v: string; d: string }
+interface BuyLink { label: string; href: string }
+interface Props {
+  kit: { title: string; contents: KitItem[]; buy: BuyLink[] };
+  phone: string;
+  phoneHref: string;
+  base: string;
+}
+const { kit, phone, phoneHref, base } = Astro.props;
+---
+
+<section id="buy" class="blueprint-grid grain relative overflow-hidden bg-bg0 py-24 text-white md:py-32">
+  <div class="glow-soft absolute left-1/2 top-0 h-[420px] w-[420px] -translate-x-1/2"></div>
+  <div class="relative mx-auto max-w-[1080px] px-5 md:px-8">
+    <div class="text-center">
+      <span class="sec-tag sec-tag--dark justify-center" data-reveal>Купить</span>
+      <h2 class="mt-5 text-[clamp(28px,3.4vw,44px)]" data-reveal>{kit.title}</h2>
+      <p class="mt-4 text-mutd" data-reveal>
+        Всё для самостоятельного нанесения на детали двигателя — покрытие и очиститель-активатор в одном наборе.
+      </p>
+    </div>
+
+    <div class="mt-12 grid items-center gap-10 md:grid-cols-[0.9fr_1.1fr]">
+      <img src={`${base}img/prod-dvs.webp`} alt={kit.title} loading="lazy" decoding="async"
+        width="360" height="360" data-reveal class="mx-auto w-full max-w-[320px] drop-shadow-2xl" />
+
+      <div>
+        <div class="grid gap-3" data-reveal>
+          {kit.contents.map((c) => (
+            <div class="flex items-start gap-4 rounded-xl border border-lined bg-white/[0.03] p-4">
+              <span class="mt-0.5 shrink-0 text-accent"><Icon name="check" size={20} /></span>
+              <div>
+                <div class="text-[15.5px] font-semibold text-white">{c.t}</div>
+                <div class="mt-0.5 font-mono text-[12px] uppercase tracking-[0.06em] text-accent">{c.v}</div>
+                <div class="mt-1 text-[13.5px] leading-snug text-mutd">{c.d}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div class="mt-6 flex flex-wrap gap-3" data-reveal>
+          {kit.buy.map((b, i) => (
+            <a href={b.href} target="_blank" rel="noopener"
+              class={`inline-flex items-center gap-2 px-6 py-3.5 font-semibold ${i === 0 ? 'btn-accent' : 'btn-ghost-d'}`}>
+              Купить на {b.label} <Icon name="arrow-right" size={16} class="rotate-[-45deg]" />
+            </a>
+          ))}
+        </div>
+
+        <p class="mt-6 text-[14px] leading-relaxed text-mutd" data-reveal>
+          Нужна другая марка покрытия, промышленное нанесение или нестандартный узел —
+          инженер подберёт под вашу задачу: <a href={phoneHref} class="font-semibold text-accent hover:underline">{phone}</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
