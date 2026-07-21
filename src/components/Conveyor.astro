@@ -1,0 +1,60 @@
+---
+/* Конвейерная лента линейки продуктов.
+   Банки едут по ленте и ускоряются от скорости скролла (motion.ts → buildMarquee).
+   Chip-фильтры по основе (MoS₂/графит/ПТФЭ) — TODO: после получения полного
+   списка марок от заказчика. */
+interface Props { products: string[] }
+const { products } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const img = (n: string) => `${base}img/${n}`;
+const line = [...products, ...products];
+const items = [...line, ...line];
+
+const stats = [
+  { value: 25, suffix: '+', label: 'марок в линейке' },
+  { value: 12, suffix: '+', label: 'отраслей применения' },
+  { value: 15, suffix: '+', label: 'лет производства' },
+];
+---
+
+<section class="blueprint-grid-l relative overflow-hidden bg-surface py-24 md:py-32">
+  <span class="sheet-index" aria-hidden="true">06</span>
+  <div class="relative mx-auto max-w-[1280px] px-5 md:px-8">
+    <span class="sec-tag" data-reveal>Линейка</span>
+    <h2 class="mt-5 max-w-3xl text-[clamp(28px,3.4vw,44px)]" data-split>Крупнейшая линейка покрытий в России</h2>
+    <p class="mt-4 max-w-xl text-mutl" data-reveal>Под любую пару трения, температуру и среду — от MoS₂ и графита до ПТФЭ. Подберём марку под ваш узел.</p>
+  </div>
+
+  <!-- сцена конвейера -->
+  <div class="relative mt-14 md:mt-20">
+    <div class="pointer-events-none absolute inset-x-0 top-1/2 h-36 -translate-y-full bg-gradient-to-t from-accent/10 to-transparent blur-2xl"></div>
+
+    <div class="relative" data-marquee>
+      <div class="flex w-max items-end gap-14 px-10 will-change-transform md:gap-20" data-marquee-track>
+        {items.map((p) => (
+          <div class="relative flex w-[104px] shrink-0 flex-col items-center md:w-[150px]">
+            <div class="glow-soft absolute bottom-6 h-32 w-32 md:h-40 md:w-40"></div>
+            <img src={img(p)} alt="Покрытие MODENGY" loading="eager" decoding="async"
+              width="160" height="176"
+              class="relative z-10 h-32 w-full object-contain drop-shadow-2xl md:h-44" />
+            <div class="belt-shadow mt-2 w-20 md:w-28"></div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="belt mx-5 h-9 md:mx-8 md:h-11"></div>
+  </div>
+
+  <!-- статы линейки -->
+  <div class="mx-auto mt-16 grid max-w-4xl grid-cols-3 gap-6 px-5 md:px-8">
+    {stats.map((s) => (
+      <div class="text-center" data-reveal>
+        <div class="font-mono text-4xl font-medium text-ink md:text-5xl">
+          <span data-count={s.value} data-suffix={s.suffix}>0</span>
+        </div>
+        <div class="mt-1 text-[13.5px] text-mutl">{s.label}</div>
+      </div>
+    ))}
+  </div>
+</section>

@@ -1,0 +1,53 @@
+---
+/* Видео-карточка (facade): показываем превью-заглушку с кнопкой play,
+   а сам RuTube-iframe подгружаем только по клику — страница не тормозит. */
+interface Props { id: string; title: string; label?: string }
+const { id, title, label } = Astro.props;
+---
+
+<button
+  type="button"
+  data-video-id={id}
+  aria-label={`Смотреть: ${title}`}
+  class="group relative block aspect-video w-full overflow-hidden rounded-[16px] border border-lined bg-graphite-900 text-left transition-colors duration-300 hover:border-accent/50"
+>
+  <div class="blueprint-grid absolute inset-0 opacity-40 transition-transform duration-500 group-hover:scale-110"></div>
+  <div class="glow-soft absolute left-1/2 top-1/2 h-40 w-40 -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 group-hover:opacity-100"></div>
+
+  <span class="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-accent text-bg0 shadow-lg transition-all duration-200 group-hover:scale-110 group-hover:shadow-[0_0_34px_rgba(255,180,0,.55)]">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+  </span>
+
+  {label && (
+    <span class="absolute left-3 top-3 rounded-md bg-accent px-2 py-1 font-mono text-[11px] font-medium uppercase tracking-[0.06em] text-bg0">{label}</span>
+  )}
+
+  <span class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-bg0 via-bg0/70 to-transparent p-4 pt-10 text-[13.5px] font-medium leading-snug text-white">
+    {title}
+  </span>
+</button>
+
+<script>
+  function boot() {
+    document.querySelectorAll<HTMLButtonElement>('[data-video-id]').forEach((btn) => {
+      if (btn.dataset.bound) return;
+      btn.dataset.bound = '1';
+      btn.addEventListener(
+        'click',
+        () => {
+          const id = btn.getAttribute('data-video-id');
+          const frame = document.createElement('div');
+          frame.className = 'relative aspect-video w-full overflow-hidden rounded-[16px] border border-lined';
+          frame.innerHTML =
+            `<iframe src="https://rutube.ru/play/embed/${id}?autoStart=true" ` +
+            `class="absolute inset-0 h-full w-full" frameborder="0" ` +
+            `allow="clipboard-write; autoplay; fullscreen" allowfullscreen ` +
+            `title="Видео MODENGY"></iframe>`;
+          btn.replaceWith(frame);
+        },
+        { once: true }
+      );
+    });
+  }
+  document.addEventListener('astro:page-load', boot);
+</script>

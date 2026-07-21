@@ -1,0 +1,673 @@
+---
+import Base from '../../layouts/Base.astro';
+import Chrome from '../../components/Chrome.astro';
+import Quiz from '../../components/Quiz.astro';
+import Conveyor from '../../components/Conveyor.astro';
+import Blueprint from '../../components/Blueprint.astro';
+import Icon from '../../components/Icon.astro';
+import VideoCard from '../../components/VideoCard.astro';
+import Cases from '../../components/Cases.astro';
+import ReviewFloat from '../../components/ReviewFloat.astro';
+import { dvs } from '../../data/dvs';
+
+const base = import.meta.env.BASE_URL; // '/promo/'
+const img = (name: string) => `${base}img/${name.replace(/\.png$/, '.webp')}`;
+
+const industries = ['Автопром', 'Нефтегаз', 'Авиакосмос', 'ОПК', 'Робототехника', 'ЖД транспорт', 'Металлургия', 'Атомная энергетика'];
+
+/* Паспорт покрытия — только проверенные значения */
+const passport = [
+  { param: 'Коэффициент трения', value: 'до 0,03', note: 'метод ASTM G99 · собственная лаборатория' },
+  { param: 'Толщина плёнки', value: '15–25 мкм', note: 'не меняет посадку и зазор' },
+  { param: 'Межслойная сушка', value: '10 мин', note: 'при комнатной температуре' },
+  { param: 'Полное отверждение', value: '~12 ч', note: 'при комнатной температуре' },
+  { param: 'Основа', value: 'MoS₂ + графит', note: 'полимерное связующее' },
+  { param: 'Формат', value: 'аэрозоль 210 мл', note: 'или промышленное нанесение' },
+];
+
+const painIcons = ['flame', 'gauge', 'thermometer', 'waves'];
+
+const why = [
+  { icon: 'timer', n: '15', suffix: '+', t: 'лет на рынке', d: 'Крупнейшая в РФ линейка серийных антифрикционных твердосмазочных покрытий.', wide: true },
+  { icon: 'flask', n: '2', suffix: '', t: 'собственные лаборатории', d: 'R&D и аккредитованные испытания: трение (ASTM G99), износ, коррозия (ISO 9227), резьба (ГОСТ ISO 16047).', wide: false },
+  { icon: 'globe', n: '12', suffix: '+', t: 'отраслей применения', d: 'Авиакосмос, ОПК, нефтегаз, робототехника, ЖД, атомная энергетика, металлургия.', wide: false },
+  { icon: 'swap', n: '', suffix: '', t: 'Импортозамещение', d: 'Прямые аналоги Molykote и других импортных покрытий — со склада в РФ.', wide: false },
+  { icon: 'cog', n: '', suffix: '', t: 'Сопровождение под ключ', d: 'Подбор марки, расчёт расхода, шеф-нанесение и поддержка при внедрении.', wide: false },
+];
+
+/* Сравнение «отечественное vs импорт» — честные общие факты (без выдуманных ТТХ импорта) */
+const importRows = [
+  { k: 'Наличие на складе в РФ', us: 'Брянск и Санкт-Петербург', them: 'ограничено · санкционные риски' },
+  { k: 'Цена и оплата', us: 'в рублях, без валютных скачков', them: 'валюта + логистика' },
+  { k: 'Техподдержка', us: 'инженеры завода, шеф-нанесение, на русском', them: 'через дистрибьютора' },
+  { k: 'Испытания под вашу задачу', us: 'собственная аккредитованная лаборатория', them: 'по месту производства' },
+  { k: 'Подбор прямого аналога', us: 'заменим ваше импортное покрытие', them: '—' },
+];
+
+/* 6 эффектов покрытия (как на исходной странице, но в нашем стиле) */
+const effectCards = [
+  { icon: 'gauge', t: 'Снижает трение', d: 'Меньше сопротивление, ниже расход топлива и энергозатраты.' },
+  { icon: 'shield', t: 'Предотвращает задиры', d: 'Аварийная защита при холодном пуске и «масляном голодании».' },
+  { icon: 'timer', t: 'Замедляет износ', d: 'Повышает ресурс пары трения и узла в целом.' },
+  { icon: 'waves', t: 'Гасит шум и вибрацию', d: 'Стабильный коэффициент трения — тише и ровнее работа.' },
+  { icon: 'thermometer', t: 'Держит температуру', d: 'Работает там, где жидкая смазка вымывается или деградирует.' },
+  { icon: 'layers', t: 'Не меняет геометрию', d: 'Плёнка 15–25 мкм не влияет на посадку и зазоры.' },
+];
+---
+
+<Base
+  title="Антифрикционное покрытие для деталей ДВС | MODENGY"
+  description="Твердосмазочное антифрикционное покрытие MODENGY для деталей ДВС: юбки поршней, вкладыши, дроссельные заслонки. Снижает трение, задиры и износ. Подбор за 1 рабочий день."
+>
+  <link slot="head" rel="preload" as="image" href={img('hero-1.png')} fetchpriority="high" />
+
+  <Chrome phone={dvs.phone} phoneHref={dvs.phoneHref} />
+  <div id="top"></div>
+
+  <!-- ======================= HERO ======================= -->
+  <section class="blueprint-grid grain relative overflow-hidden bg-bg0 pt-[var(--header-h)] text-white">
+    <canvas data-particles class="pointer-events-none absolute inset-0 z-0 hidden lg:block" aria-hidden="true"></canvas>
+    <div data-hero-glow class="glow-soft absolute right-[6%] top-1/3 h-[480px] w-[480px]"></div>
+
+    <div class="relative mx-auto grid max-w-[1280px] items-center gap-12 px-5 pb-24 pt-12 md:grid-cols-2 md:px-8 md:pb-28 md:pt-16">
+      <div>
+        <span data-hero-item class="inline-flex items-center gap-2 rounded-full border border-lined px-4 py-1.5 font-mono text-[11.5px] uppercase tracking-[0.08em] text-accent">
+          <span class="h-1.5 w-1.5 rounded-full bg-accent"></span> {dvs.hero.kicker}
+        </span>
+
+        <h1 data-hero-h1 class="mt-6 text-[clamp(27px,3.15vw,44px)] leading-[1.1]">
+          <span class="line"><span>Антифрикционное</span></span>
+          <span class="line"><span>покрытие для</span></span>
+          <span class="line"><span>деталей <em class="not-italic text-accent">ДВС</em></span></span>
+        </h1>
+
+        <p data-hero-item class="mt-6 max-w-xl text-[17px] leading-relaxed text-mutd md:text-lg">{dvs.hero.sub}</p>
+
+        <div data-hero-item class="mt-8 flex flex-col gap-3.5 sm:flex-row">
+          <a href="#quiz" data-magnetic class="btn-accent group inline-flex items-center justify-center gap-2 px-7 py-4">
+            Подобрать покрытие за 5 секунд
+            <span class="transition-transform group-hover:translate-x-1"><Icon name="arrow-right" size={17} /></span>
+          </a>
+          <a href="#specs" class="btn-ghost-d inline-flex items-center justify-center px-7 py-4 font-medium">
+            Характеристики и прайс
+          </a>
+        </div>
+
+        <!-- траст-бейджи -->
+        <div data-hero-item class="mt-10 flex flex-wrap gap-2.5">
+          <span class="inline-flex items-center gap-2 rounded-full border border-lined px-3.5 py-2 text-[13px] text-mutd">
+            <span class="text-accent"><Icon name="star" size={15} /></span> 5.0 · 105 отзывов <span class="text-white/40">MyReviews</span>
+          </span>
+          <span class="inline-flex items-center gap-2 rounded-full border border-lined px-3.5 py-2 text-[13px] text-mutd">
+            <span class="text-accent"><Icon name="doc" size={15} /></span> Выпускается по ТУ
+          </span>
+          <span class="inline-flex items-center gap-2 rounded-full border border-lined px-3.5 py-2 text-[13px] text-mutd">
+            <span class="text-accent"><Icon name="swap" size={15} /></span> Аналог Molykote · импортозамещение
+          </span>
+        </div>
+      </div>
+
+      <!-- Баллон + чертёжные выноски -->
+      <div class="relative mx-auto w-full max-w-[560px]">
+        <div data-hero-spray aria-hidden="true"
+          class="pointer-events-none absolute right-[24%] top-[2%] z-0 h-44 w-44 rounded-full opacity-0"
+          style="background:radial-gradient(circle,rgba(255,180,0,.4),transparent 62%);filter:blur(20px)"></div>
+
+        <div data-hero-media class="relative z-10 mx-auto max-w-[420px]">
+          <img
+            data-hero-img
+            src={img('hero-1.png')}
+            alt="Аэрозоль MODENGY 210 мл — антифрикционное твердосмазочное покрытие для деталей ДВС"
+            width="420" height="404"
+            fetchpriority="high" decoding="async"
+            class="w-full drop-shadow-2xl"
+          />
+          <!-- живой 3D-баллон: зацикленно крутится и парит, подменяет картинку после загрузки -->
+          <canvas data-hero-can3d class="pointer-events-none absolute -inset-6 h-[calc(100%+48px)] w-[calc(100%+48px)] opacity-0"></canvas>
+        </div>
+
+        <!-- выноски: рисуются при загрузке -->
+        <svg class="pointer-events-none absolute inset-0 z-20 hidden md:block" viewBox="0 0 560 520" aria-hidden="true">
+          <g font-family="IBM Plex Mono, monospace" font-size="11" fill="#a0a7b1" letter-spacing="1">
+            <text x="6" y="76">ПЛЁНКА 15–25 МКМ</text>
+            <text x="6" y="420">MoS₂ + ГРАФИТ</text>
+            <text x="432" y="188">ОДНОКРАТНО,</text>
+            <text x="432" y="203">НА ВЕСЬ РЕСУРС</text>
+          </g>
+          <path data-draw-load class="callout-line" d="M128 84 L218 148" />
+          <circle class="callout-dot" cx="218" cy="148" r="3" />
+          <path data-draw-load class="callout-line" d="M112 408 L208 342" />
+          <circle class="callout-dot" cx="208" cy="342" r="3" />
+          <path data-draw-load class="callout-line" d="M428 196 L362 238" />
+          <circle class="callout-dot" cx="362" cy="238" r="3" />
+        </svg>
+      </div>
+    </div>
+
+    <!-- бегущая строка отраслей -->
+    <div class="relative border-y border-lined bg-graphite-900/70 py-3.5" data-marquee>
+      <div class="flex w-max gap-10 whitespace-nowrap will-change-transform" data-marquee-track>
+        {[...industries, ...industries].map((n) => (
+          <span class="flex items-center gap-3 font-mono text-[12px] font-medium uppercase tracking-[0.14em] text-white/40">
+            {n} <span class="text-accent">◆</span>
+          </span>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= КЕЙСЫ: ДО/ПОСЛЕ + ЛЕТЯЩИЙ БАЛЛОН ======================= -->
+  <Cases cases={dvs.cases} base={base} />
+
+
+  <!-- ======================= ПАСПОРТ ПОКРЫТИЯ ======================= -->
+  <section id="specs" class="blueprint-grid-l relative overflow-hidden bg-surface py-24 md:py-32">
+    <span class="sheet-index" aria-hidden="true">01</span>
+    <div class="relative mx-auto max-w-[1280px] px-5 md:px-8">
+      <span class="sec-tag" data-reveal>Паспорт покрытия</span>
+      <h2 class="mt-5 max-w-3xl text-[clamp(28px,3.4vw,44px)]" data-split>Инженерные показатели, а не обещания</h2>
+
+      <div class="mt-14 grid items-start gap-14 lg:grid-cols-[1fr_440px]">
+        <!-- строки техпаспорта -->
+        <div>
+          {passport.map((row, i) => (
+            <div class="grid grid-cols-[1fr_auto] items-baseline gap-6 border-b border-linel py-5" data-reveal>
+              <div>
+                <div class="font-medium text-ink">{row.param}</div>
+                <div class="mt-0.5 font-mono text-[12px] uppercase tracking-[0.06em] text-mutl">{row.note}</div>
+              </div>
+              <div class="text-right font-mono text-2xl font-medium text-ink md:text-3xl">{row.value}</div>
+            </div>
+          ))}
+          <p class="mt-4 font-mono text-[12px] uppercase tracking-[0.06em] text-mutl">
+            Значения зависят от марки · точные ТТХ — при подборе
+          </p>
+        </div>
+
+        <!-- график трения (схема, рисуется на скролле) -->
+        <figure data-reveal class="rounded-[16px] border border-linel bg-bgl p-6 md:p-7">
+          <svg viewBox="0 0 420 240" fill="none" class="w-full" role="img" aria-label="Схема снижения коэффициента трения после нанесения покрытия">
+            <g stroke="#e4e7eb" stroke-width="1">
+              <line x1="30" y1="16" x2="30" y2="210" />
+              <line x1="30" y1="210" x2="405" y2="210" />
+              <line x1="30" y1="68" x2="405" y2="68" stroke-dasharray="3 5" />
+              <line x1="30" y1="176" x2="405" y2="176" stroke-dasharray="3 5" />
+            </g>
+            <path d="M30 52 C 130 48, 260 60, 400 55" stroke="#a0a7b1" stroke-width="2" stroke-dasharray="6 6" />
+            <path data-draw d="M30 60 C 150 66, 210 164, 400 178" stroke="#ffb400" stroke-width="3.5" stroke-linecap="round" />
+            <circle cx="400" cy="178" r="5" fill="#ffb400" />
+            <circle cx="400" cy="178" r="5" fill="#ffb400" class="chart-pulse" />
+            <g font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="0.5">
+              <text x="36" y="44" fill="#5a6472">μ БЕЗ ПОКРЫТИЯ</text>
+              <text x="222" y="150" fill="#14161a" font-weight="600">С ПОКРЫТИЕМ MODENGY</text>
+              <text x="342" y="205" fill="#b98500" font-weight="600">ДО 0,03</text>
+            </g>
+          </svg>
+          <figcaption class="mt-3 font-mono text-[11.5px] uppercase tracking-[0.06em] text-mutl">
+            Схема · коэффициент трения до и после нанесения
+          </figcaption>
+        </figure>
+      </div>
+
+      <!-- 3D-коленвал: вращается вокруг горизонтальной оси (появится, когда придёт модель) -->
+      <div data-crank-wrap class="relative mx-auto mt-4 hidden aspect-[16/7] w-full max-w-[720px] lg:block">
+        <canvas data-crank3d class="h-full w-full cursor-grab active:cursor-grabbing"></canvas>
+        <div class="pointer-events-none absolute inset-x-0 bottom-1 text-center font-mono text-[10.5px] uppercase tracking-[0.1em] text-mutl">
+          Коленвал ДВС · вкладыши защищает MODENGY 1014 — потяните, чтобы повернуть
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= ПРОБЛЕМА ======================= -->
+  <section id="problem" class="blueprint-grid-l relative overflow-hidden bg-bgl py-24 md:py-32">
+    <span class="sheet-index" aria-hidden="true">02</span>
+    <div class="relative mx-auto max-w-[1280px] px-5 md:px-8">
+      <!-- 3D-поршень: ходит вверх-вниз как в цилиндре (декор, десктоп) -->
+      <div class="pointer-events-none absolute -top-10 right-0 hidden h-[360px] w-[360px] lg:block" aria-hidden="true">
+        <canvas data-piston3d class="h-full w-full"></canvas>
+      </div>
+      <span class="sec-tag" data-reveal>Проблема</span>
+      <h2 class="mt-5 max-w-2xl text-[clamp(28px,3.4vw,44px)]" data-split>Что «съедает» ресурс двигателя</h2>
+      <p class="mt-4 max-w-xl text-mutl" data-reveal>Там, где жидкая смазка не справляется, металл работает по металлу. Результат — задиры, износ и потеря мощности.</p>
+
+      <!-- мобайл: свайп со snap; десктоп: сетка -->
+      <div class="mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-4">
+        {dvs.pains.map((p, i) => (
+          <div data-reveal class="card-heat w-[78vw] max-w-[330px] shrink-0 snap-start p-6 sm:w-auto sm:max-w-none">
+            <div class="icon-pad mb-5"><Icon name={painIcons[i]} size={22} /></div>
+            <h3 class="text-[17px]">{p.title}</h3>
+            <p class="mt-2 text-[14.5px] leading-relaxed text-mutl">{p.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= МАТЕРИАЛ: СУХАЯ СМАЗКА ======================= -->
+  <section id="material" class="grain relative overflow-hidden bg-bg1 py-24 text-white md:py-32">
+    <div class="relative mx-auto grid max-w-[1280px] items-center gap-14 px-5 md:grid-cols-2 md:px-8">
+      <div>
+        <span class="sec-tag sec-tag--dark" data-reveal>Материал</span>
+        <h2 class="mt-5 text-[clamp(28px,3.4vw,44px)]" data-split>Сухая смазка, которая держится</h2>
+        <p class="mt-5 text-[16.5px] leading-relaxed text-mutd">{dvs.how.lead}</p>
+
+        <!-- состав — чипы -->
+        <div class="mt-6 flex flex-wrap gap-2.5" data-reveal="left">
+          {['MoS₂', 'Графит', 'Полимерное связующее', 'Плёнка 15–25 мкм'].map((c) => (
+            <span class="inline-flex rounded-full border border-accent/40 bg-accent/[0.06] px-3.5 py-1.5 font-mono text-[12px] uppercase tracking-[0.06em] text-accent">{c}</span>
+          ))}
+        </div>
+
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a href="#quiz" data-magnetic class="btn-accent inline-flex items-center gap-2 px-6 py-3.5">
+            Подобрать под узел <Icon name="arrow-right" size={16} />
+          </a>
+          <a href="https://modengy.ru/catalog/antifriktsionnye-tverdosmazochnye-pokrytiya/" target="_blank" rel="noopener"
+            class="btn-ghost-d inline-flex items-center gap-2 px-6 py-3.5 font-medium">
+            <Icon name="box" size={16} /> Купить набор
+          </a>
+        </div>
+
+        <!-- температурная линейка: заливка «прогревается» при появлении, метки-счётчики -->
+        <div class="mt-10" data-reveal="right">
+          <div class="mb-2 flex justify-between font-mono text-[11px] uppercase tracking-[0.08em] text-mutd">
+            <span>−200 °C</span><span>Рабочая зона покрытия · MODENGY 1001</span><span>+500 °C</span>
+          </div>
+          <div class="relative h-3 overflow-hidden rounded-full bg-white/[0.06]">
+            <!-- зона −180…+440 из диапазона −200…+500 → left 2.9%, width 88.6% -->
+            <div class="temp-zone absolute inset-y-0 rounded-full border border-accent/60" style="left:2.9%;width:88.6%"></div>
+          </div>
+          <div class="mt-2 flex gap-4 font-mono text-[12px] uppercase tracking-[0.08em] text-accent">
+            <span>от <span data-count="-180" data-suffix=" °C">0</span></span>
+            <span>до <span data-count="440" data-suffix=" °C">0</span></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Справа: слои MoS₂ + ИНТЕРАКТИВНЫЙ 3D-баллон (крути мышкой) -->
+      <div class="relative">
+        <figure data-mos data-reveal="left" class="card-d relative overflow-hidden p-8">
+          <svg viewBox="0 0 360 220" class="w-full" role="img" aria-label="Слоистая структура дисульфида молибдена: пластины скользят друг по другу">
+            {[0, 1, 2, 3, 4, 5].map((i) => (
+              <g class="mos-layer" data-mos-i={i}>
+                <path
+                  d={`M${60} ${180 - i * 26} l190 0 l40 -14 l-190 0 Z`}
+                  fill={i % 2 ? 'rgba(255,180,0,0.14)' : 'rgba(255,255,255,0.05)'}
+                  stroke={i % 2 ? 'rgba(255,180,0,0.55)' : 'rgba(255,255,255,0.22)'}
+                  stroke-width="1.2"
+                />
+              </g>
+            ))}
+            <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#a0a7b1" letter-spacing="1">
+              <text x="60" y="210">СЛОИ MoS₂ СКОЛЬЗЯТ ДРУГ ПО ДРУГУ — ТРЕНИЕ ПАДАЕТ</text>
+            </g>
+          </svg>
+        </figure>
+
+        <div data-mat-can-wrap class="relative mx-auto mt-6 hidden aspect-square w-full max-w-[440px] lg:block" data-reveal="right">
+          <div class="glow-soft absolute inset-x-0 -bottom-[10%] top-[22%] opacity-70"></div>
+          <canvas data-mat-can3d class="relative h-full w-full cursor-grab active:cursor-grabbing"></canvas>
+          <div class="pointer-events-none absolute inset-x-0 bottom-0 text-center font-mono text-[10.5px] uppercase tracking-[0.1em] text-white/40">
+            Потяните — покрутите баллон
+          </div>
+        </div>
+        <img data-fly="right" src={img('prod-dvs.png')} alt="Набор MODENGY для деталей ДВС"
+          loading="lazy" decoding="async" width="300" height="300"
+          class="mx-auto mt-8 w-full max-w-[300px] drop-shadow-2xl lg:hidden" />
+      </div>
+    </div>
+
+    <!-- 6 эффектов покрытия -->
+    <div class="relative mx-auto mt-16 grid max-w-[1280px] gap-5 px-5 sm:grid-cols-2 md:px-8 lg:grid-cols-3">
+      {effectCards.map((c) => (
+        <div data-reveal class="card-d p-6">
+          <div class="flex h-11 w-11 items-center justify-center rounded-xl border border-lined text-accent"><Icon name={c.icon} size={22} /></div>
+          <h3 class="mt-4 text-[16px] text-white">{c.t}</h3>
+          <p class="mt-1.5 text-[14px] leading-relaxed text-mutd">{c.d}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- ======================= ПРИМЕНЕНИЕ: ЧЕРТЁЖ (SIGNATURE) ======================= -->
+  <Blueprint applications={dvs.applications} base={base} />
+
+
+
+  <!-- ======================= ПОЧЕМУ MODENGY (bento) ======================= -->
+  <section id="why" class="blueprint-grid-l relative overflow-hidden bg-bgl py-24 md:py-32">
+    <span class="sheet-index" aria-hidden="true">05</span>
+    <div class="relative mx-auto max-w-[1280px] px-5 md:px-8">
+      <span class="sec-tag" data-reveal>Производитель</span>
+      <h2 class="mt-5 max-w-2xl text-[clamp(28px,3.4vw,44px)]" data-split>Почему покрытие берут у MODENGY</h2>
+      <p class="mt-4 max-w-xl text-mutl" data-reveal>Не перекупщики и не «гаражная» химия — производитель полного цикла с собственной наукой и испытаниями.</p>
+
+      <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {why.map((c) => (
+          <div data-reveal class={`rounded-[16px] border border-linel bg-surface p-7 ${c.wide ? 'sm:col-span-2' : ''}`}>
+            <div class="flex items-start justify-between gap-4">
+              <div class="icon-pad"><Icon name={c.icon} size={22} /></div>
+              {c.n && (
+                <div class="font-mono text-4xl font-medium text-ink md:text-5xl">
+                  <span data-count={c.n} data-suffix={c.suffix}>0</span>
+                </div>
+              )}
+            </div>
+            <h3 class="mt-5 text-[17px]">{c.t}</h3>
+            <p class="mt-2 text-[14.5px] leading-relaxed text-mutl">{c.d}</p>
+          </div>
+        ))}
+
+        <!-- ячейка-карта: завод и филиал -->
+        <div data-reveal class="rounded-[16px] border border-linel bg-bg0 p-7 text-white">
+          <div class="flex items-start justify-between">
+            <div class="icon-pad !border-lined !text-white"><Icon name="factory" size={22} /></div>
+          </div>
+          <svg viewBox="0 0 220 120" class="mt-4 w-full" role="img" aria-label="Схема: производство в Брянске, филиал в Санкт-Петербурге">
+            <g fill="rgba(255,255,255,0.12)">
+              {Array.from({ length: 60 }).map((_, i) => (
+                <circle cx={12 + (i % 12) * 18} cy={12 + Math.floor(i / 12) * 22} r="1.3" />
+              ))}
+            </g>
+            <path d="M76 34 L118 86" stroke="#ffb400" stroke-width="1.2" stroke-dasharray="4 4" />
+            <circle cx="76" cy="34" r="4" fill="#ffb400" />
+            <circle cx="118" cy="86" r="4" fill="#ffb400" />
+            <g font-family="IBM Plex Mono, monospace" font-size="10" fill="#a0a7b1" letter-spacing="0.5">
+              <text x="86" y="32">САНКТ-ПЕТЕРБУРГ · ФИЛИАЛ</text>
+              <text x="128" y="90">БРЯНСК · ЗАВОД</text>
+            </g>
+          </svg>
+          <p class="mt-3 text-[14.5px] text-mutd">Завод в Брянске (новый цех — 2024), филиал в Санкт-Петербурге, Инженерный центр обучения.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= КИНЕТИЧЕСКАЯ СТРОКА (бежит бесконечно) ======================= -->
+  <div aria-hidden="true" class="overflow-hidden bg-bg0 py-8 md:py-10" data-marquee>
+    <div class="kinetic-line flex w-max whitespace-nowrap will-change-transform" data-marquee-track>
+      <span class="pr-12">ТРЕНИЕ <span class="kinetic-fill">0,03</span> ◆ MoS₂ + ГРАФИТ ◆ −180…+440 °C ◆&nbsp;</span>
+      <span class="pr-12">ТРЕНИЕ <span class="kinetic-fill">0,03</span> ◆ MoS₂ + ГРАФИТ ◆ −180…+440 °C ◆&nbsp;</span>
+    </div>
+  </div>
+
+  <!-- ======================= ЛИНЕЙКА (КОНВЕЙЕР) ======================= -->
+  <Conveyor products={['prod-1001.webp', 'prod-1014.webp', 'prod-1009.webp', 'prod-dvs.webp', 'prod-kit.webp']} />
+
+  <!-- ======================= ИНСТРУКЦИЯ НАНЕСЕНИЯ (6 ШАГОВ) ======================= -->
+  <section class="blueprint-grid-l relative overflow-hidden bg-bgl py-24 md:py-32">
+    <span class="sheet-index" aria-hidden="true">07</span>
+    <div class="relative mx-auto max-w-[1280px] px-5 md:px-8">
+      <span class="sec-tag" data-reveal>Инструкция</span>
+      <h2 class="mt-5 max-w-3xl text-[clamp(28px,3.4vw,44px)]" data-split>Нанесение покрытия из аэрозольного баллона</h2>
+      <p class="mt-4 max-w-xl text-mutl" data-reveal>Шесть шагов — от подготовки поверхности до полного отверждения. Для серийных партий возможно промышленное нанесение и шеф-нанесение.</p>
+
+      <div class="mt-14 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+        {dvs.applySteps.map((s, i) => (
+          <div data-reveal class="group relative rounded-2xl p-4 transition-colors duration-300 hover:bg-accent/[0.05]">
+            <span class="absolute right-3 top-2 font-mono text-[13px] font-semibold text-accent/60 transition-colors group-hover:text-accent">
+              {String(i + 1).padStart(2, '0')} / 06
+            </span>
+            <img src={img(s.icon)} alt={s.title} loading="lazy" decoding="async" height="88"
+              class="h-[88px] w-auto object-contain object-left transition-transform duration-300 group-hover:-translate-y-1.5" />
+            <h3 class="mt-5 text-[16.5px]">{s.title}</h3>
+            <p class="mt-2 text-[14.5px] leading-relaxed text-mutl">{s.text}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- акцент: очиститель-активатор -->
+      <div data-reveal class="mt-16 flex flex-col items-start gap-5 rounded-[16px] border border-accent/40 bg-accent/[0.06] p-7 md:flex-row md:items-center">
+        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-accent text-bg0"><Icon name="flask" size={24} /></div>
+        <p class="text-[15.5px] leading-relaxed text-ink">
+          <strong class="font-semibold">Важно:</strong> хорошую адгезию гарантирует только фирменный <strong class="font-semibold">очиститель-активатор MODENGY</strong> — им обязательно подготавливают поверхность перед нанесением покрытия.
+        </p>
+        <a href="#quiz" data-magnetic class="btn-accent shrink-0 whitespace-nowrap px-6 py-3.5 md:ml-auto">Заказать набор</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= ВИДЕОИНСТРУКЦИЯ ======================= -->
+  <section class="grain relative overflow-hidden bg-bg1 py-24 text-white md:py-32">
+    <span class="sheet-index d" aria-hidden="true">08</span>
+    <div class="relative mx-auto max-w-[1280px] px-5 md:px-8">
+      <span class="sec-tag sec-tag--dark" data-reveal>Видео</span>
+      <h2 class="mt-5 max-w-3xl text-[clamp(28px,3.4vw,44px)]" data-split>Видеоинструкция по нанесению</h2>
+      <p class="mt-4 max-w-xl text-mutd" data-reveal>Как покрытие наносится на реальные детали двигателя — от набора до заводского применения.</p>
+
+      <div class="mt-12 grid gap-6 lg:grid-cols-[1.5fr_1fr]">
+        <div data-reveal>
+          <VideoCard id={dvs.videos.main.id} title={dvs.videos.main.title} label="Инструкция" />
+          <!-- под главным видео: что понадобится для нанесения -->
+          <div class="mt-6 grid gap-3 sm:grid-cols-2">
+            {[
+              { icon: 'box', t: 'Аэрозоль MODENGY 210 мл', d: 'наносится без спецоборудования' },
+              { icon: 'flask', t: 'Очиститель-активатор', d: 'обязателен — гарантирует адгезию' },
+              { icon: 'timer', t: '10 минут', d: 'межслойная сушка при комнатной T°' },
+              { icon: 'shield', t: '~12 часов', d: 'полное отверждение покрытия' },
+            ].map((i) => (
+              <div class="flex items-start gap-3 rounded-xl border border-lined bg-white/[0.03] p-4 transition-colors hover:border-accent/50">
+                <span class="mt-0.5 shrink-0 text-accent"><Icon name={i.icon} size={20} /></span>
+                <div>
+                  <div class="text-[14.5px] font-semibold text-white">{i.t}</div>
+                  <div class="mt-0.5 text-[13px] leading-snug text-mutd">{i.d}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div class="grid gap-6 sm:grid-cols-3 lg:grid-cols-1">
+          {dvs.videos.process.map((v) => (
+            <div data-reveal><VideoCard id={v.id} title={v.title} /></div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= СРАВНЕНИЕ С ИМПОРТОМ ======================= -->
+  <section class="grain relative bg-bg0 py-24 text-white md:py-32">
+    <div class="relative mx-auto max-w-[1280px] px-5 md:px-8">
+      <span class="sec-tag sec-tag--dark" data-reveal>Сравнение</span>
+      <h2 class="mt-5 max-w-2xl text-[clamp(28px,3.4vw,44px)]" data-split>MODENGY против импортного аналога</h2>
+
+      <div class="mt-12 overflow-x-auto" data-reveal>
+        <table class="w-full min-w-[640px] border-collapse text-left">
+          <thead>
+            <tr class="border-b border-lined font-mono text-[12px] uppercase tracking-[0.08em]">
+              <th class="py-4 pr-6 font-medium text-mutd">Параметр</th>
+              <th class="py-4 pr-6 font-medium text-accent">MODENGY</th>
+              <th class="py-4 font-medium text-mutd">Импортный аналог (Molykote)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {importRows.map((r) => (
+              <tr class="border-b border-lined" data-reveal>
+                <td class="py-5 pr-6 text-[15px] text-mutd">{r.k}</td>
+                <td class="py-5 pr-6 text-[15px] font-medium text-white">{r.us}</td>
+                <td class="py-5 font-mono text-[13px] uppercase tracking-[0.06em] text-white/35">{r.them}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="mt-4 font-mono text-[11.5px] uppercase tracking-[0.06em] text-white/35" data-reveal>
+        Подберём прямую замену вашему импортному покрытию · сравнение под конкретную марку — по запросу
+      </p>
+
+      <!-- доверие -->
+      <div class="mt-14 flex flex-wrap items-center gap-x-10 gap-y-5" data-reveal>
+        <div class="flex items-center gap-4">
+          <div class="font-mono text-5xl font-medium text-white">5.0</div>
+          <div>
+            <div class="flex gap-0.5 text-accent">
+              {Array.from({ length: 5 }).map(() => <Icon name="star" size={15} />)}
+            </div>
+            <div class="mt-1 text-[13px] text-mutd">105 отзывов · MyReviews</div>
+          </div>
+        </div>
+        <div class="hidden h-10 w-px bg-lined sm:block"></div>
+        <p class="max-w-md text-[14.5px] text-mutd">
+          Применяется в серийном производстве и ремонте. По запросу вышлем кейсы, протоколы испытаний и документы соответствия ТУ.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= ОТЗЫВЫ ======================= -->
+  <section id="reviews" class="blueprint-grid-l relative overflow-hidden bg-surface py-24 md:py-32">
+    <span class="sheet-index" aria-hidden="true">09</span>
+    <div class="relative mx-auto max-w-[1280px] px-5 md:px-8">
+      <span class="sec-tag" data-reveal>Отзывы</span>
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <h2 class="mt-5 max-w-2xl text-[clamp(28px,3.4vw,44px)]" data-split>Что говорят механики и инженеры</h2>
+        <div class="flex items-center gap-4" data-reveal>
+          <div class="font-mono text-5xl font-medium text-ink">5.0</div>
+          <div>
+            <div class="flex gap-0.5 text-accent">
+              {Array.from({ length: 5 }).map(() => <Icon name="star" size={15} />)}
+            </div>
+            <div class="mt-1 text-[13px] text-mutl">105 отзывов · MyReviews</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- карусель видеоотзывов -->
+      <div class="mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4">
+        {dvs.reviewVideos.map((v) => (
+          <div data-reveal class="w-[80vw] max-w-[360px] shrink-0 snap-start sm:w-[46vw] lg:w-auto lg:flex-1">
+            <VideoCard id={v.id} title={v.title} label="Видеоотзыв" />
+          </div>
+        ))}
+      </div>
+
+      <!-- ссылки на площадки с отзывами -->
+      <div class="mt-8 flex flex-wrap items-center gap-3" data-reveal>
+        <span class="font-mono text-[12px] uppercase tracking-[0.08em] text-mutl">Отзывы на площадках:</span>
+        {dvs.reviewLinks.map((l) => (
+          <a href={l.href} target="_blank" rel="noopener"
+            class="inline-flex items-center gap-2 rounded-full border border-linel px-4 py-2 text-[14px] font-medium text-ink transition-colors hover:border-accent">
+            {l.label} <Icon name="arrow-right" size={14} class="rotate-[-45deg]" />
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= САМОПОДБОР ПОКРЫТИЯ ======================= -->
+  <Quiz steps={dvs.quiz.steps} catalogUrl={dvs.quiz.catalogUrl} />
+
+  <!-- ======================= FAQ ======================= -->
+  <section class="blueprint-grid-l relative overflow-hidden bg-surface py-24 md:py-32">
+    <span class="sheet-index" aria-hidden="true">10</span>
+    <div class="relative mx-auto max-w-3xl px-5 md:px-8">
+      <span class="sec-tag" data-reveal>Вопросы</span>
+      <h2 class="mt-5 text-[clamp(28px,3.4vw,44px)]" data-split>Частые вопросы</h2>
+      <div class="mt-10 divide-y divide-linel border-y border-linel">
+        {dvs.faq.map((f) => (
+          <details class="group py-5" data-reveal>
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 text-[16.5px] font-semibold text-ink">
+              {f.q}
+              <span class="shrink-0 text-accent transition-transform duration-300 group-open:rotate-45">
+                <Icon name="arrow-right" size={18} class="rotate-[-45deg]" />
+              </span>
+            </summary>
+            <p class="mt-3 text-[15px] leading-relaxed text-mutl">{f.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= ФИНАЛЬНЫЙ CTA ======================= -->
+  <section class="blueprint-grid grain relative overflow-hidden bg-bg0 py-24 text-center text-white md:py-32">
+    <div class="glow-soft absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2"></div>
+    <div class="relative mx-auto max-w-2xl px-5 md:px-8">
+      <h2 class="text-[clamp(30px,4vw,52px)]" data-split>Подберите покрытие под ваш двигатель</h2>
+      <p class="mt-5 text-mutd" data-reveal>Подбор за 5 секунд — сразу увидите марку MODENGY под ваш узел, без заявок и звонков.</p>
+      <div class="mt-9 flex flex-col items-center justify-center gap-4 sm:flex-row" data-reveal>
+        <a href="#quiz" data-magnetic class="btn-accent inline-flex items-center gap-2 px-8 py-4">
+          Получить подбор <Icon name="arrow-right" size={17} />
+        </a>
+        <a href={dvs.phoneHref} class="font-mono text-[15px] text-white/85 transition-colors hover:text-accent">{dvs.phone}</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= FOOTER ======================= -->
+  <footer class="border-t border-lined bg-bg0 py-12 pb-24 text-mutd md:pb-12">
+    <div class="mx-auto max-w-[1280px] px-5 md:px-8">
+      <div class="flex flex-col justify-between gap-9 md:flex-row">
+        <div>
+          <div class="font-display text-xl font-bold text-white">MODENGY<span class="text-accent">®</span></div>
+          <p class="mt-3 max-w-sm text-[14px]">Технологии снижения трения. Антифрикционные твердосмазочные покрытия собственного производства.</p>
+        </div>
+        <div class="text-[14px]">
+          <div class="font-mono text-[11.5px] uppercase tracking-[0.08em] text-white/45">Контакты</div>
+          <a href={dvs.phoneHref} class="mt-2 block font-mono text-white/85 hover:text-accent">{dvs.phone}</a>
+          <div class="mt-2">{dvs.requisites.addresses.join(' · ')}</div>
+        </div>
+        <div class="text-[14px]">
+          <div class="font-mono text-[11.5px] uppercase tracking-[0.08em] text-white/45">Реквизиты</div>
+          <div class="mt-2">{dvs.requisites.company}</div>
+          <div>{dvs.requisites.inn}</div>
+          <div class="mt-1">Выпускается по ТУ</div>
+        </div>
+      </div>
+      <div class="mt-10 border-t border-lined pt-6 font-mono text-[11.5px] uppercase tracking-[0.06em] text-white/35">
+        © 2026 MODENGY® · Обработка персональных данных — согласно политике конфиденциальности
+      </div>
+    </div>
+  </footer>
+
+  <!-- Плавающая карточка «Оцените MODENGY» -->
+  <ReviewFloat />
+
+  <style is:global>
+    /* Hover-выделение карточек — акцент без клика, почти везде */
+    #why .rounded-\[16px\],
+    .card-heat,
+    .card-d,
+    section details {
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    }
+    #why .rounded-\[16px\]:hover,
+    .card-heat:hover,
+    .card-d:hover {
+      transform: translateY(-5px);
+      border-color: rgba(255, 180, 0, 0.45);
+      box-shadow: 0 20px 48px -18px rgba(255, 180, 0, 0.18);
+    }
+    /* строки паспорта и таблицы сравнения подсвечиваются */
+    #specs .border-b.border-linel:hover { background: rgba(255, 180, 0, 0.05); }
+    tbody tr { transition: background-color 0.25s ease; }
+    tbody tr:hover { background: rgba(255, 180, 0, 0.05); }
+    /* FAQ: плавное появление ответа */
+    section details:hover summary { color: #b98500; }
+    section details[open] > p {
+      animation: faq-in 0.38s ease both;
+    }
+    @keyframes faq-in {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    /* температурная шкала «течёт» */
+    .temp-zone {
+      background: linear-gradient(90deg, rgba(255, 180, 0, 0.18), rgba(255, 180, 0, 0.5), rgba(255, 180, 0, 0.18));
+      background-size: 200% 100%;
+      animation: temp-flow 3s linear infinite;
+    }
+    @keyframes temp-flow { to { background-position: -200% 0; } }
+    /* мягкий пульс главных CTA-кнопок */
+    @keyframes cta-glow {
+      0%, 100% { box-shadow: 0 0 0 rgba(255, 180, 0, 0); }
+      50% { box-shadow: 0 0 26px rgba(255, 180, 0, 0.4); }
+    }
+    a[data-magnetic].btn-accent, [data-float-cta] { animation: cta-glow 3s ease-in-out infinite; }
+    @media (prefers-reduced-motion: reduce) {
+      .temp-zone { animation: none; }
+      a[data-magnetic].btn-accent, [data-float-cta] { animation: none; }
+    }
+  </style>
+</Base>

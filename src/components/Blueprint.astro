@@ -1,0 +1,180 @@
+---
+/* SIGNATURE: интерактивный чертёж-разрез ДВС (честный line-art, не реализм).
+   6 хотспотов ↔ 6 карточек узлов. Hover/клик по точке подсвечивает контур
+   и карточку; hover по карточке подсвечивает точку. Логика — motion.ts (buildBlueprint). */
+import Icon from './Icon.astro';
+
+interface App { slug: string; title: string; text: string; product: string }
+interface Props { applications: App[]; base: string }
+const { applications, base } = Astro.props;
+const useImg = (i: number) => `${base}img/use${i + 1}.webp`;
+
+/* Позиции хотспотов на чертеже (viewBox 0 0 520 600) */
+const HOTSPOTS: Record<string, { x: number; y: number }> = {
+  porshni: { x: 260, y: 240 },
+  vkladyshi: { x: 260, y: 385 },
+  zaslonki: { x: 85, y: 72 },
+  klapany: { x: 225, y: 118 },
+  shlicy: { x: 420, y: 430 },
+  krepezh: { x: 155, y: 140 },
+};
+---
+
+<section id="applications" class="blueprint-grid grain relative overflow-hidden bg-bg0 py-24 text-white md:py-32">
+  <div class="relative mx-auto max-w-[1280px] px-5 md:px-8">
+    <span class="sec-tag sec-tag--dark" data-reveal>Применение</span>
+    <h2 class="mt-5 max-w-3xl text-[clamp(28px,3.4vw,44px)]" data-split>Где применяется в двигателе</h2>
+    <p class="mt-4 max-w-xl text-mutd" data-reveal>
+      Покрутите настоящий 3D-двигатель. Жёлтая точка — узел, где работает покрытие: клик — переход к подбору.
+    </p>
+
+    <div class="mt-14 grid items-start gap-12 lg:grid-cols-[1.15fr_1fr]" data-blueprint>
+      <!-- 3D-ДВИГАТЕЛЬ (desktop) -->
+      <div data-engine3d-wrap class="relative hidden select-none lg:block" data-reveal="left">
+        <canvas data-engine3d class="aspect-[4/3] w-full cursor-grab active:cursor-grabbing"></canvas>
+        {applications.map((a) => (
+          <a href="#quiz" data-spot3d={a.slug} aria-label={a.title}
+            class="spot3d group absolute z-10 -translate-x-1/2 -translate-y-1/2 opacity-0">
+            <span class="halo3d"></span>
+            <span class="core3d"></span>
+            <span class="lbl3d">{a.title}</span>
+          </a>
+        ))}
+        <div class="pointer-events-none absolute bottom-2 left-2 font-mono text-[10.5px] uppercase tracking-[0.1em] text-white/35">
+          MODENGY · ДВС · 3D — потяните, чтобы повернуть
+        </div>
+      </div>
+
+      <!-- ЧЕРТЁЖ (мобайл-фолбэк) -->
+      <figure class="relative lg:hidden" data-reveal>
+        <svg viewBox="0 0 520 600" class="w-full" role="img" aria-label="Упрощённый чертёж-разрез двигателя с отмеченными узлами применения покрытия">
+          <!-- рамка чертежа + штамп -->
+          <rect x="6" y="6" width="508" height="588" class="bp-stroke" opacity="0.5" />
+          <g font-family="IBM Plex Mono, monospace" font-size="10" fill="rgba(255,255,255,0.35)" letter-spacing="1">
+            <text x="20" y="582">MODENGY · РАЗРЕЗ ДВС · СХЕМА</text>
+            <text x="422" y="582">М 1:1</text>
+          </g>
+
+          <!-- впускной канал + дроссель -->
+          <g class="bp-part" data-part="zaslonki">
+            <path class="bp-stroke" d="M140 88 L60 48 M140 112 L60 78" />
+            <circle class="bp-stroke" cx="85" cy="72" r="4" />
+            <path class="bp-stroke" d="M72 88 L98 56" />
+          </g>
+
+          <!-- ГБЦ -->
+          <rect x="140" y="70" width="240" height="70" rx="6" class="bp-stroke" />
+          <!-- клапаны -->
+          <g class="bp-part" data-part="klapany">
+            <path class="bp-stroke" d="M225 82 V138 M211 138 H239" />
+            <path class="bp-stroke" d="M295 82 V138 M281 138 H309" />
+          </g>
+          <!-- крепёж ГБЦ -->
+          <g class="bp-part" data-part="krepezh">
+            <path class="bp-stroke" d="M150 132 h12 v16 h-12 Z M148 132 h16" />
+            <path class="bp-stroke" d="M358 132 h12 v16 h-12 Z M356 132 h16" />
+          </g>
+
+          <!-- блок цилиндров -->
+          <rect x="110" y="140" width="300" height="360" rx="8" class="bp-stroke" />
+          <!-- зеркало цилиндра -->
+          <path class="bp-stroke" d="M195 140 V380 M325 140 V380" />
+
+          <!-- поршень -->
+          <g class="bp-part" data-part="porshni">
+            <rect x="200" y="175" width="120" height="105" rx="4" class="bp-stroke" />
+            <path class="bp-stroke" d="M200 190 H320 M200 202 H320" />
+            <!-- юбка: штриховка зоны покрытия -->
+            <path class="bp-stroke" opacity="0.6" d="M204 236 l18 -14 M204 254 l30 -24 M204 272 l40 -32 M226 278 l36 -28 M258 278 l30 -24 M290 278 l24 -19" />
+          </g>
+          <circle class="bp-stroke" cx="260" cy="255" r="9" />
+
+          <!-- шатун и вкладыш -->
+          <g class="bp-part" data-part="vkladyshi">
+            <path class="bp-stroke" d="M252 263 L251 364 M268 263 L269 364" />
+            <circle class="bp-stroke" cx="260" cy="385" r="22" />
+            <path class="bp-stroke" d="M238 385 a22 22 0 0 1 44 0" opacity="0.6" />
+          </g>
+
+          <!-- коленвал -->
+          <circle class="bp-stroke" cx="260" cy="438" r="46" />
+          <circle class="bp-stroke" cx="260" cy="438" r="7" />
+          <path class="bp-stroke" d="M224 466 a46 46 0 0 0 72 0 Z" opacity="0.55" />
+
+          <!-- шлицевой вал -->
+          <g class="bp-part" data-part="shlicy">
+            <path class="bp-stroke" d="M306 430 H470 M306 446 H470 M470 424 V452" />
+            <path class="bp-stroke" opacity="0.7" d="M330 430 V446 M346 430 V446 M362 430 V446 M378 430 V446 M394 430 V446 M410 430 V446 M426 430 V446 M442 430 V446 M458 430 V446" />
+          </g>
+
+          <!-- размерные выноски -->
+          <g font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="0.5">
+            <path class="callout-line" d="M330 240 H396" />
+            <text x="402" y="244" fill="rgba(255,255,255,0.5)">ЮБКА · 15–25 МКМ</text>
+            <path class="callout-line" d="M300 385 H396" />
+            <text x="402" y="389" fill="rgba(255,255,255,0.5)">MoS₂ + ГРАФИТ</text>
+          </g>
+
+          <!-- хотспоты -->
+          {applications.map((a) => {
+            const p = HOTSPOTS[a.slug];
+            if (!p) return null;
+            return (
+              <a href="#quiz" class="bp-hotspot" data-hotspot={a.slug} aria-label={a.title}>
+                <circle class="halo" cx={p.x} cy={p.y} r="9" />
+                <circle class="core" cx={p.x} cy={p.y} r="5" />
+              </a>
+            );
+          })}
+        </svg>
+      </figure>
+
+      <!-- КАРТОЧКИ УЗЛОВ -->
+      <div class="grid gap-3">
+        {applications.map((a, i) => (
+          <a href="#quiz" data-app-card={a.slug} data-reveal
+            class="app-card group flex items-center gap-4 p-4">
+            <img transition:name={`app-${a.slug}`} src={useImg(i)} alt={a.title} loading="lazy" decoding="async"
+              width="56" height="56" class="kenburns h-14 w-14 shrink-0 rounded-full border border-lined object-cover" />
+            <div class="min-w-0 flex-1">
+              <h3 class="text-[15.5px] font-semibold text-white">{a.title}</h3>
+              <p class="mt-0.5 truncate text-[13px] text-mutd">{a.text}</p>
+              <span class="mt-1 inline-block font-mono text-[11px] uppercase tracking-[0.08em] text-accent">{a.product}</span>
+            </div>
+            <span class="text-accent transition-transform group-hover:translate-x-1">
+              <Icon name="arrow-right" size={18} />
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .spot3d { transition: opacity .25s ease; }
+  .core3d {
+    display: block; width: 13px; height: 13px; border-radius: 999px;
+    background: #ffb400; box-shadow: 0 0 12px rgba(255,180,0,.9);
+    transition: transform .2s ease;
+  }
+  .spot3d:hover .core3d, .spot3d.lit .core3d { transform: scale(1.35); }
+  .halo3d {
+    position: absolute; inset: -9px; border-radius: 999px;
+    border: 1.5px solid rgba(255,180,0,.55);
+    animation: spot-pulse 2s ease-out infinite;
+  }
+  @keyframes spot-pulse {
+    0% { transform: scale(.6); opacity: 1; }
+    100% { transform: scale(1.6); opacity: 0; }
+  }
+  .lbl3d {
+    position: absolute; left: 50%; top: -30px; transform: translateX(-50%);
+    white-space: nowrap; padding: 3px 9px; border-radius: 8px;
+    background: rgba(11,12,14,.92); border: 1px solid rgba(255,180,0,.5);
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: .06em;
+    text-transform: uppercase; color: #ffb400;
+    opacity: 0; transition: opacity .2s ease; pointer-events: none;
+  }
+  .spot3d:hover .lbl3d, .spot3d.lit .lbl3d { opacity: 1; }
+</style>

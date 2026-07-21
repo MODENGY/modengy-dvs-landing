@@ -1,0 +1,168 @@
+---
+/* Самоподбор покрытия: 3 шага (узел → условия → формат) → мгновенная рекомендация
+   марки MODENGY. Все варианты предусмотрены заранее — никакого «менеджер свяжется». */
+import Icon from './Icon.astro';
+interface Opt { label: string; product?: string; why?: string; note?: string }
+interface Step { key: string; q: string; opts: Opt[] }
+interface Props { steps: Step[]; catalogUrl: string; id?: string }
+const { steps, catalogUrl, id = 'quiz' } = Astro.props;
+const total = steps.length;
+---
+
+<section id={id} class="blueprint-grid grain relative overflow-hidden bg-bg0 py-24 text-white md:py-32">
+  <div class="glow-soft absolute -top-20 left-1/2 h-[380px] w-[380px] -translate-x-1/2"></div>
+  <div class="relative mx-auto max-w-3xl px-5 md:px-8">
+    <div class="mb-9 text-center" data-reveal>
+      <span class="sec-tag sec-tag--dark justify-center">Подбор за 5 секунд</span>
+      <h2 class="mt-5 text-[clamp(28px,3.4vw,44px)]">Какое покрытие вам подходит</h2>
+      <p class="mt-3 text-mutd">3 коротких шага — и вы сразу увидите подходящую марку MODENGY под ваш узел. Без заявок и ожидания.</p>
+    </div>
+
+    <div class="card-d overflow-hidden" data-quiz data-total={total} data-catalog={catalogUrl}>
+      <!-- прогресс: жёлтая чертёжная линия -->
+      <div class="relative h-[3px] w-full bg-lined">
+        <div class="quiz-bar absolute inset-y-0 left-0 w-0 bg-accent transition-[width] duration-500" data-quiz-bar></div>
+      </div>
+
+      <div class="p-6 md:p-10">
+        {steps.map((step, i) => (
+          <div class="quiz-step" data-step={i} hidden={i !== 0}>
+            <div class="mb-1 font-mono text-[12px] uppercase tracking-[0.08em] text-accent">Шаг {i + 1} / {total}</div>
+            <h3 class="mb-6 text-2xl font-semibold">{step.q}</h3>
+            <div class="grid gap-3 sm:grid-cols-2">
+              {step.opts.map((opt) => (
+                <button type="button"
+                  class="quiz-opt group flex items-center justify-between gap-3 rounded-xl border border-lined bg-white/[0.03] px-5 py-4 text-left text-[15px] font-medium transition-colors hover:border-accent hover:bg-accent/10"
+                  data-value={opt.label}
+                  data-product={opt.product ?? ''}
+                  data-why={opt.why ?? ''}
+                  data-note={opt.note ?? ''}>
+                  {opt.label}
+                  <span class="text-mutd transition-all group-hover:translate-x-0.5 group-hover:text-accent"><Icon name="arrow-right" size={16} /></span>
+                </button>
+              ))}
+            </div>
+          </div>
+        ))}
+
+        <!-- РЕЗУЛЬТАТ: мгновенная рекомендация -->
+        <div class="quiz-result hidden" data-quiz-result>
+          <div class="mb-1 font-mono text-[12px] uppercase tracking-[0.08em] text-accent">Ваша рекомендация</div>
+          <div class="flex flex-wrap items-center gap-3">
+            <h3 class="text-[clamp(24px,3vw,34px)] font-semibold">Вам подходит <span class="text-accent" data-res-product>MODENGY</span></h3>
+            <span class="inline-flex items-center rounded-md border-[1.5px] border-accent/60 px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.12em] text-accent -rotate-3">ПОДОБРАНО</span>
+          </div>
+          <p class="mt-3 text-[15.5px] leading-relaxed text-mutd" data-res-why></p>
+
+          <!-- параметры покрытия (проверенные) -->
+          <div class="mt-6 flex flex-wrap gap-2.5">
+            <span class="inline-flex rounded-full border border-lined bg-white/[0.03] px-3.5 py-1.5 font-mono text-[12px] uppercase tracking-[0.06em] text-mutd">Коэффициент трения · до 0,03</span>
+            <span class="inline-flex rounded-full border border-lined bg-white/[0.03] px-3.5 py-1.5 font-mono text-[12px] uppercase tracking-[0.06em] text-mutd">Плёнка · 15–25 мкм</span>
+            <span class="inline-flex rounded-full border border-lined bg-white/[0.03] px-3.5 py-1.5 font-mono text-[12px] uppercase tracking-[0.06em] text-mutd">Основа · MoS₂ + графит</span>
+          </div>
+
+          <!-- условия / формат -->
+          <div class="mt-6 grid gap-3 sm:grid-cols-2">
+            <div class="rounded-xl border border-lined bg-white/[0.02] p-4">
+              <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-mutd">Условия узла</div>
+              <div class="mt-1 text-[15px] font-medium" data-res-cond>—</div>
+            </div>
+            <div class="rounded-xl border border-lined bg-white/[0.02] p-4">
+              <div class="font-mono text-[11px] uppercase tracking-[0.08em] text-mutd">Формат нанесения</div>
+              <div class="mt-1 text-[14.5px] leading-snug" data-res-note>—</div>
+            </div>
+          </div>
+
+          <div class="mt-7 flex flex-col gap-3 sm:flex-row">
+            <a data-res-cta target="_blank" rel="noopener" href={catalogUrl}
+              class="btn-accent inline-flex items-center justify-center gap-2 px-7 py-4">
+              Смотреть покрытие в каталоге <Icon name="arrow-right" size={17} />
+            </a>
+            <button type="button" class="btn-ghost-d inline-flex items-center justify-center gap-2 px-7 py-4 font-medium" data-quiz-restart>
+              <Icon name="swap" size={16} /> Пройти заново
+            </button>
+          </div>
+        </div>
+
+        <button type="button" class="quiz-back mt-6 hidden text-sm text-mutd transition-colors hover:text-accent" data-quiz-back>← Назад</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initQuiz(root: HTMLElement) {
+    const steps = Array.from(root.querySelectorAll<HTMLElement>('.quiz-step'));
+    const bar = root.querySelector<HTMLElement>('[data-quiz-bar]')!;
+    const backBtn = root.querySelector<HTMLElement>('[data-quiz-back]')!;
+    const result = root.querySelector<HTMLElement>('[data-quiz-result]')!;
+    const total = Number(root.dataset.total || steps.length);
+    const catalog = root.dataset.catalog || '#';
+
+    const resProduct = root.querySelector<HTMLElement>('[data-res-product]')!;
+    const resWhy = root.querySelector<HTMLElement>('[data-res-why]')!;
+    const resCond = root.querySelector<HTMLElement>('[data-res-cond]')!;
+    const resNote = root.querySelector<HTMLElement>('[data-res-note]')!;
+    const resCta = root.querySelector<HTMLAnchorElement>('[data-res-cta]')!;
+
+    const answers: Array<{ value: string; product: string; why: string; note: string }> = [];
+    let cur = 0;
+
+    const setBar = (i: number) => (bar.style.width = `${(i / total) * 100}%`);
+
+    const show = (i: number) => {
+      steps.forEach((s, idx) => (s.hidden = idx !== i));
+      result.classList.add('hidden');
+      backBtn.classList.toggle('hidden', i === 0);
+      setBar(i);
+      cur = i;
+    };
+
+    const showResult = () => {
+      const node = answers[0];
+      const cond = answers[1]?.value || '—';
+      const fmt = answers[2];
+      resProduct.textContent = node?.product || 'MODENGY 1001';
+      resWhy.textContent = node?.why || '';
+      resCond.textContent = cond;
+      resNote.textContent = fmt?.note || '';
+      resCta.href = catalog;
+      steps.forEach((s) => (s.hidden = true));
+      result.classList.remove('hidden');
+      backBtn.classList.remove('hidden');
+      setBar(total);
+    };
+
+    steps.forEach((step, i) => {
+      step.querySelectorAll<HTMLElement>('.quiz-opt').forEach((opt) => {
+        opt.addEventListener('click', () => {
+          answers[i] = {
+            value: opt.dataset.value || '',
+            product: opt.dataset.product || '',
+            why: opt.dataset.why || '',
+            note: opt.dataset.note || '',
+          };
+          if (i < steps.length - 1) show(i + 1);
+          else showResult();
+        });
+      });
+    });
+
+    backBtn.addEventListener('click', () => {
+      if (!result.classList.contains('hidden')) show(steps.length - 1);
+      else show(Math.max(cur - 1, 0));
+    });
+
+    root.querySelector<HTMLElement>('[data-quiz-restart]')?.addEventListener('click', () => {
+      answers.length = 0;
+      show(0);
+    });
+
+    show(0);
+  }
+
+  function boot() {
+    document.querySelectorAll<HTMLElement>('[data-quiz]').forEach(initQuiz);
+  }
+  document.addEventListener('astro:page-load', boot);
+</script>

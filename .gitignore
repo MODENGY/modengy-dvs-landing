@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.astro/
+_shots/
+_box2/
+*.zip
+*.glb
+!public/models/*.glb
+engine-src.glb
+newcan-src.glb
+piston-src.glb
+e[0-9].glb
+n[0-9].glb
+p[0-9].glb
+dev.log
