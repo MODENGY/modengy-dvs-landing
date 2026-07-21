@@ -1,10 +1,47 @@
 @import "tailwindcss";
 
-/* Корпоративный шрифт MODENGY (приложен заказчиком) */
+/* ============================================================
+   Корпоративный шрифт MODENGY — Gilroy (полная семья, с кириллицей)
+   ============================================================ */
 @font-face {
-  font-family: "Museo Sans Ex";
-  src: url("/promo/fonts/MuseoSansEx-500.ttf") format("truetype");
-  font-weight: 400 700;
+  font-family: "Gilroy";
+  src: url("/promo/fonts/Gilroy-Light.woff") format("woff"), url("/promo/fonts/Gilroy-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gilroy";
+  src: url("/promo/fonts/Gilroy-Regular.woff") format("woff"), url("/promo/fonts/Gilroy-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gilroy";
+  src: url("/promo/fonts/Gilroy-Medium.woff") format("woff"), url("/promo/fonts/Gilroy-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gilroy";
+  src: url("/promo/fonts/Gilroy-SemiBold.woff") format("woff"), url("/promo/fonts/Gilroy-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gilroy";
+  src: url("/promo/fonts/Gilroy-Bold.woff") format("woff"), url("/promo/fonts/Gilroy-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Gilroy";
+  src: url("/promo/fonts/Gilroy-ExtraBold.woff") format("woff"), url("/promo/fonts/Gilroy-ExtraBold.ttf") format("truetype");
+  font-weight: 800;
   font-style: normal;
   font-display: swap;
 }
@@ -48,10 +85,10 @@
   --color-muted: #5a6472;
   --color-teal: #fdc100;
 
-  /* Типографика: корпоративные шрифты (Museo Sans — брендбук, Roboto — корп-сайт) */
-  --font-display: "Museo Sans Ex", "Roboto", system-ui, sans-serif;
-  --font-sans: "Roboto", system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", monospace;
+  /* Типографика: только корпоративный Gilroy */
+  --font-display: "Gilroy", system-ui, sans-serif;
+  --font-sans: "Gilroy", system-ui, sans-serif;
+  --font-mono: "Gilroy", system-ui, sans-serif;
 
   /* Форма и движение */
   --radius-card: 16px;

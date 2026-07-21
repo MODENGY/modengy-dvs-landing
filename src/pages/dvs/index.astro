@@ -60,6 +60,8 @@ const effectCards = [
   description="Твердосмазочное антифрикционное покрытие MODENGY для деталей ДВС: юбки поршней, вкладыши, дроссельные заслонки. Снижает трение, задиры и износ. Подбор за 1 рабочий день."
 >
   <link slot="head" rel="preload" as="image" href={img('hero-1.png')} fetchpriority="high" />
+  <link slot="head" rel="preload" as="font" type="font/woff" href={`${base}fonts/Gilroy-Regular.woff`} crossorigin />
+  <link slot="head" rel="preload" as="font" type="font/woff" href={`${base}fonts/Gilroy-Bold.woff`} crossorigin />
 
   <Chrome phone={dvs.phone} phoneHref={dvs.phoneHref} />
   <div id="top"></div>
@@ -120,7 +122,7 @@ const effectCards = [
 
         <!-- выноски: рисуются при загрузке -->
         <svg class="pointer-events-none absolute inset-0 z-20 hidden md:block" viewBox="0 0 560 520" aria-hidden="true">
-          <g font-family="IBM Plex Mono, monospace" font-size="11" fill="#a0a7b1" letter-spacing="1">
+          <g font-family="Gilroy, sans-serif" font-size="11" fill="#a0a7b1" letter-spacing="1">
             <text x="6" y="76">ПЛЁНКА 15–25 МКМ</text>
             <text x="6" y="420">MoS₂ + ГРАФИТ</text>
             <text x="432" y="188">ОДНОКРАТНО,</text>
@@ -252,7 +254,7 @@ const effectCards = [
                 />
               </g>
             ))}
-            <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="#a0a7b1" letter-spacing="1">
+            <g font-family="Gilroy, sans-serif" font-size="10.5" fill="#a0a7b1" letter-spacing="1">
               <text x="60" y="210">СЛОИ MoS₂ СКОЛЬЗЯТ ДРУГ ПО ДРУГУ — ТРЕНИЕ ПАДАЕТ</text>
             </g>
           </svg>
@@ -310,7 +312,7 @@ const effectCards = [
             <path d="M30 52 C 130 48, 260 60, 400 55" stroke="#a0a7b1" stroke-width="2" stroke-dasharray="6 6" />
             <path d="M30 60 C 150 66, 210 164, 400 178" stroke="#fdc100" stroke-width="3.5" stroke-linecap="round" />
             <circle cx="400" cy="178" r="5" fill="#fdc100" />
-            <g font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="0.5">
+            <g font-family="Gilroy, sans-serif" font-size="11" letter-spacing="0.5">
               <text x="36" y="44" fill="#5a6472">μ БЕЗ ПОКРЫТИЯ</text>
               <text x="222" y="150" fill="#14161a" font-weight="600">С ПОКРЫТИЕМ MODENGY</text>
               <text x="342" y="205" fill="#b98500" font-weight="600">ДО 0,03</text>
@@ -367,7 +369,7 @@ const effectCards = [
             <path d="M76 34 L118 86" stroke="#fdc100" stroke-width="1.2" stroke-dasharray="4 4" />
             <circle cx="76" cy="34" r="4" fill="#fdc100" />
             <circle cx="118" cy="86" r="4" fill="#fdc100" />
-            <g font-family="IBM Plex Mono, monospace" font-size="10" fill="#a0a7b1" letter-spacing="0.5">
+            <g font-family="Gilroy, sans-serif" font-size="10" fill="#a0a7b1" letter-spacing="0.5">
               <text x="86" y="32">САНКТ-ПЕТЕРБУРГ · ФИЛИАЛ</text>
               <text x="128" y="90">БРЯНСК · ЗАВОД</text>
             </g>
