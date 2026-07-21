@@ -9,14 +9,14 @@ interface Props { applications: App[]; base: string }
 const { applications, base } = Astro.props;
 const useImg = (i: number) => `${base}img/use${i + 1}.webp`;
 
-/* Позиции хотспотов на чертеже (viewBox 0 0 520 600) */
+/* Позиции хотспотов на чертеже (viewBox 0 0 560 640) */
 const HOTSPOTS: Record<string, { x: number; y: number }> = {
-  porshni: { x: 260, y: 240 },
-  vkladyshi: { x: 260, y: 385 },
-  zaslonki: { x: 85, y: 72 },
-  klapany: { x: 225, y: 118 },
-  shlicy: { x: 420, y: 430 },
-  krepezh: { x: 155, y: 140 },
+  zaslonki: { x: 96, y: 150 },   // дроссельная заслонка во впуске
+  klapany: { x: 212, y: 148 },   // стержень впускного клапана
+  krepezh: { x: 372, y: 118 },   // болт ГБЦ
+  porshni: { x: 191, y: 318 },   // юбка поршня
+  vkladyshi: { x: 250, y: 408 }, // вкладыш нижней головки шатуна
+  shlicy: { x: 432, y: 486 },    // шлицевой хвостовик коленвала
 };
 ---
 
@@ -31,72 +31,135 @@ const HOTSPOTS: Record<string, { x: number; y: number }> = {
     <div class="mt-14 grid items-start gap-12 lg:grid-cols-[1.15fr_1fr]" data-blueprint>
       <!-- ЧЕРТЁЖ -->
       <figure class="relative" data-reveal>
-        <svg viewBox="0 0 520 600" class="w-full" role="img" aria-label="Упрощённый чертёж-разрез двигателя с отмеченными узлами применения покрытия">
-          <!-- рамка чертежа + штамп -->
-          <rect x="6" y="6" width="508" height="588" class="bp-stroke" opacity="0.5" />
-          <g font-family="Gilroy, sans-serif" font-size="10" fill="rgba(255,255,255,0.35)" letter-spacing="1">
-            <text x="20" y="582">MODENGY · РАЗРЕЗ ДВС · СХЕМА</text>
-            <text x="422" y="582">М 1:1</text>
+        <svg viewBox="0 0 560 640" class="w-full" role="img"
+          aria-label="Технический разрез двигателя внутреннего сгорания с отмеченными узлами применения покрытия MODENGY">
+          <defs>
+            <!-- штриховка металла в разрезе -->
+            <pattern id="bp-hatch" width="7" height="7" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="0" x2="0" y2="7" stroke="rgba(221,233,239,0.26)" stroke-width="1" />
+            </pattern>
+            <!-- зона покрытия MODENGY -->
+            <pattern id="bp-coat" width="5" height="5" patternTransform="rotate(45)" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="0" x2="0" y2="5" stroke="rgba(253,193,0,0.55)" stroke-width="1.4" />
+            </pattern>
+          </defs>
+
+          <!-- рамка чертежа -->
+          <rect x="8" y="8" width="544" height="624" class="bp-stroke" opacity="0.4" />
+          <line x1="8" y1="596" x2="552" y2="596" class="bp-stroke" opacity="0.4" />
+          <g font-family="Gilroy, sans-serif" font-size="10.5" fill="rgba(221,233,239,0.42)" letter-spacing="1.1">
+            <text x="24" y="618">MODENGY · РАЗРЕЗ ДВС · СХЕМА УЗЛОВ</text>
+            <text x="470" y="618">М 1:1</text>
           </g>
 
-          <!-- впускной канал + дроссель -->
+          <!-- ================= ВПУСК + ДРОССЕЛЬНАЯ ЗАСЛОНКА ================= -->
           <g class="bp-part" data-part="zaslonki">
-            <path class="bp-stroke" d="M140 88 L60 48 M140 112 L60 78" />
-            <circle class="bp-stroke" cx="85" cy="72" r="4" />
-            <path class="bp-stroke" d="M72 88 L98 56" />
+            <path class="bp-stroke" d="M150 122 H68 a16 16 0 0 0 -16 16 v24 a16 16 0 0 0 16 16 H150" />
+            <circle class="bp-stroke" cx="96" cy="150" r="4" />
+            <line class="bp-stroke" x1="76" y1="166" x2="116" y2="134" stroke-width="2.8" />
+            <text x="52" y="196" font-family="Gilroy, sans-serif" font-size="9.5"
+              fill="rgba(221,233,239,0.4)" letter-spacing="0.8">ВПУСК</text>
           </g>
 
-          <!-- ГБЦ -->
-          <rect x="140" y="70" width="240" height="70" rx="6" class="bp-stroke" />
-          <!-- клапаны -->
+          <!-- выпускной канал -->
+          <path class="bp-stroke" d="M392 122 H474 a16 16 0 0 1 16 16 v24 a16 16 0 0 1 -16 16 H392" opacity="0.75" />
+          <text x="446" y="196" font-family="Gilroy, sans-serif" font-size="9.5"
+            fill="rgba(221,233,239,0.4)" letter-spacing="0.8">ВЫПУСК</text>
+
+          <!-- ================= ГОЛОВКА БЛОКА ЦИЛИНДРОВ ================= -->
+          <path class="bp-stroke" d="M150 84 H392 a10 10 0 0 1 10 10 V196 H140 V94 a10 10 0 0 1 10 -10 Z"
+            fill="url(#bp-hatch)" />
+          <!-- камера сгорания (шатёр) -->
+          <path class="bp-stroke" d="M196 196 L226 172 H316 L346 196" fill="#0e1a20" />
+          <!-- распредвалы -->
+          <circle class="bp-stroke" cx="212" cy="112" r="19" />
+          <path class="bp-stroke" d="M212 93 a19 19 0 0 1 13 5 l-13 14 Z" />
+          <circle class="bp-stroke" cx="330" cy="112" r="19" />
+          <path class="bp-stroke" d="M330 93 a19 19 0 0 1 13 5 l-13 14 Z" />
+
+          <!-- клапаны: стержни, пружины, тарелки -->
           <g class="bp-part" data-part="klapany">
-            <path class="bp-stroke" d="M225 82 V138 M211 138 H239" />
-            <path class="bp-stroke" d="M295 82 V138 M281 138 H309" />
+            <path class="bp-stroke" d="M212 131 V181 M330 131 V181" stroke-width="2.6" />
+            <!-- витки пружин -->
+            <path class="bp-stroke" opacity="0.8"
+              d="M201 136 L223 143 L201 150 L223 157 L201 164 L223 171 L201 178" />
+            <path class="bp-stroke" opacity="0.8"
+              d="M319 136 L341 143 L319 150 L341 157 L319 164 L341 171 L319 178" />
+            <!-- тарелки клапанов -->
+            <path class="bp-stroke" d="M197 180 h30 l-9 10 h-12 Z M315 180 h30 l-9 10 h-12 Z" />
           </g>
-          <!-- крепёж ГБЦ -->
+
+          <!-- болты ГБЦ -->
           <g class="bp-part" data-part="krepezh">
-            <path class="bp-stroke" d="M150 132 h12 v16 h-12 Z M148 132 h16" />
-            <path class="bp-stroke" d="M358 132 h12 v16 h-12 Z M356 132 h16" />
+            <path class="bp-stroke" d="M164 84 h16 v10 h-16 Z M172 94 V212 M362 84 h16 v10 h-16 Z M370 94 V212" />
+            <path class="bp-stroke" opacity="0.6" d="M167 100 h10 M167 108 h10 M365 100 h10 M365 108 h10" />
           </g>
 
-          <!-- блок цилиндров -->
-          <rect x="110" y="140" width="300" height="360" rx="8" class="bp-stroke" />
-          <!-- зеркало цилиндра -->
-          <path class="bp-stroke" d="M195 140 V380 M325 140 V380" />
+          <!-- прокладка ГБЦ -->
+          <line class="bp-stroke" x1="140" y1="199" x2="402" y2="199" stroke-dasharray="6 4" />
 
-          <!-- поршень -->
+          <!-- ================= БЛОК ЦИЛИНДРОВ ================= -->
+          <path class="bp-stroke" d="M140 202 H402 V470 H140 Z" fill="url(#bp-hatch)" />
+          <!-- зеркало цилиндра (полость) -->
+          <rect x="196" y="202" width="150" height="238" fill="#0e1a20" class="bp-stroke" />
+          <!-- рубашка охлаждения -->
+          <path class="bp-stroke" opacity="0.5" d="M170 214 V430 M176 214 V430 M366 214 V430 M372 214 V430" />
+
+          <!-- ================= ПОРШЕНЬ ================= -->
           <g class="bp-part" data-part="porshni">
-            <rect x="200" y="175" width="120" height="105" rx="4" class="bp-stroke" />
-            <path class="bp-stroke" d="M200 190 H320 M200 202 H320" />
-            <!-- юбка: штриховка зоны покрытия -->
-            <path class="bp-stroke" opacity="0.6" d="M204 236 l18 -14 M204 254 l30 -24 M204 272 l40 -32 M226 278 l36 -28 M258 278 l30 -24 M290 278 l24 -19" />
+            <!-- днище + канавки колец -->
+            <path class="bp-stroke" d="M199 232 H343 V262 H199 Z" fill="url(#bp-hatch)" />
+            <path class="bp-stroke" d="M199 268 H343 M199 276 H343 M199 284 H343" />
+            <!-- юбка (зона покрытия) -->
+            <path d="M199 288 H343 V352 q-72 14 -144 0 Z" fill="url(#bp-coat)" stroke="#fdc100" stroke-width="1.6" />
+            <!-- бобышка и палец -->
+            <circle class="bp-stroke" cx="271" cy="300" r="17" fill="#0e1a20" />
+            <circle class="bp-stroke" cx="271" cy="300" r="9" />
           </g>
-          <circle class="bp-stroke" cx="260" cy="255" r="9" />
 
-          <!-- шатун и вкладыш -->
+          <!-- ================= ШАТУН + ВКЛАДЫШИ ================= -->
           <g class="bp-part" data-part="vkladyshi">
-            <path class="bp-stroke" d="M252 263 L251 364 M268 263 L269 364" />
-            <circle class="bp-stroke" cx="260" cy="385" r="22" />
-            <path class="bp-stroke" d="M238 385 a22 22 0 0 1 44 0" opacity="0.6" />
+            <!-- стержень (двутавр) -->
+            <path class="bp-stroke" d="M259 316 L253 386 M283 316 L289 386" />
+            <path class="bp-stroke" opacity="0.45" d="M266 322 L262 384 M276 322 L280 384" />
+            <!-- нижняя головка + вкладыш -->
+            <circle class="bp-stroke" cx="271" cy="408" r="34" fill="#0e1a20" />
+            <circle cx="271" cy="408" r="26" fill="none" stroke="#fdc100" stroke-width="4" opacity="0.9" />
+            <circle class="bp-stroke" cx="271" cy="408" r="21" />
+            <!-- крышка шатуна -->
+            <path class="bp-stroke" opacity="0.6" d="M237 408 H305" />
           </g>
 
-          <!-- коленвал -->
-          <circle class="bp-stroke" cx="260" cy="438" r="46" />
-          <circle class="bp-stroke" cx="260" cy="438" r="7" />
-          <path class="bp-stroke" d="M224 466 a46 46 0 0 0 72 0 Z" opacity="0.55" />
+          <!-- ================= КОЛЕНВАЛ ================= -->
+          <!-- щёки и противовес -->
+          <path class="bp-stroke" d="M271 408 L271 494" opacity="0.5" />
+          <path class="bp-stroke" d="M225 494 a46 46 0 0 0 92 0 a46 46 0 0 0 -92 0" fill="url(#bp-hatch)" />
+          <circle class="bp-stroke" cx="271" cy="494" r="24" fill="#0e1a20" />
+          <circle class="bp-stroke" cx="271" cy="494" r="9" />
+          <path class="bp-stroke" opacity="0.5" d="M247 536 a46 46 0 0 0 48 0" />
 
-          <!-- шлицевой вал -->
+          <!-- ================= ШЛИЦЕВОЙ ХВОСТОВИК ================= -->
           <g class="bp-part" data-part="shlicy">
-            <path class="bp-stroke" d="M306 430 H470 M306 446 H470 M470 424 V452" />
-            <path class="bp-stroke" opacity="0.7" d="M330 430 V446 M346 430 V446 M362 430 V446 M378 430 V446 M394 430 V446 M410 430 V446 M426 430 V446 M442 430 V446 M458 430 V446" />
+            <path class="bp-stroke" d="M317 478 H500 M317 510 H500 M500 470 V518" />
+            <path class="bp-stroke" opacity="0.75"
+              d="M392 478 V510 M406 478 V510 M420 478 V510 M434 478 V510 M448 478 V510 M462 478 V510 M476 478 V510 M490 478 V510" />
           </g>
 
-          <!-- размерные выноски -->
-          <g font-family="Gilroy, sans-serif" font-size="11" letter-spacing="0.5">
-            <path class="callout-line" d="M330 240 H396" />
-            <text x="402" y="244" fill="rgba(255,255,255,0.5)">ЮБКА · 15–25 МКМ</text>
-            <path class="callout-line" d="M300 385 H396" />
-            <text x="402" y="389" fill="rgba(255,255,255,0.5)">MoS₂ + ГРАФИТ</text>
+          <!-- ================= ПОДДОН ================= -->
+          <path class="bp-stroke" d="M140 470 H402 L378 556 H164 Z" />
+          <line class="bp-stroke" x1="176" y1="530" x2="366" y2="530" stroke-dasharray="7 5" opacity="0.55" />
+
+          <!-- ================= ВЫНОСКИ ================= -->
+          <g font-family="Gilroy, sans-serif" font-size="11" letter-spacing="0.6">
+            <path class="callout-line" d="M343 320 H432" />
+            <circle class="callout-dot" cx="343" cy="320" r="2.6" />
+            <text x="438" y="324" fill="rgba(221,233,239,0.55)">ЮБКА · 15–25 МКМ</text>
+            <path class="callout-line" d="M305 424 H432" />
+            <circle class="callout-dot" cx="305" cy="424" r="2.6" />
+            <text x="438" y="428" fill="rgba(221,233,239,0.55)">MoS₂ + ГРАФИТ</text>
+            <path class="callout-line" d="M330 131 H432" />
+            <circle class="callout-dot" cx="330" cy="131" r="2.6" />
+            <text x="438" y="135" fill="rgba(221,233,239,0.55)">ШТОК КЛАПАНА</text>
           </g>
 
           <!-- хотспоты -->
@@ -105,8 +168,8 @@ const HOTSPOTS: Record<string, { x: number; y: number }> = {
             if (!p) return null;
             return (
               <a href="#buy" class="bp-hotspot" data-hotspot={a.slug} aria-label={a.title}>
-                <circle class="halo" cx={p.x} cy={p.y} r="9" />
-                <circle class="core" cx={p.x} cy={p.y} r="5" />
+                <circle class="halo" cx={p.x} cy={p.y} r="10" />
+                <circle class="core" cx={p.x} cy={p.y} r="5.5" />
               </a>
             );
           })}

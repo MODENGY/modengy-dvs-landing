@@ -52,20 +52,23 @@
    один жёлтый акцент на почти чёрном. Без сине-фиолетового,
    без glassmorphism, без анимаций ради анимаций.
    ============================================================ */
+/* Палитра взята с корпоративной промо-страницы modengy.ru/promo/dvs:
+   #fdc100 — акцент, #0e1a20 — тёмный, #b5bfc4 — приглушённый,
+   #f2f6f8 / #e8ebec / #dde9ef — светлые поверхности и линии. */
 @theme {
   /* Тёмные секции */
-  --color-bg0: #0b0c0e;
-  --color-bg1: #14161a;
-  --color-lined: rgba(255, 255, 255, 0.08);
-  --color-draft: rgba(255, 255, 255, 0.24);
-  --color-mutd: #a0a7b1;
+  --color-bg0: #0e1a20;
+  --color-bg1: #16252d;
+  --color-lined: rgba(221, 233, 239, 0.12);
+  --color-draft: rgba(221, 233, 239, 0.3);
+  --color-mutd: #b5bfc4;
 
   /* Светлые секции */
-  --color-bgl: #f4f5f7;
+  --color-bgl: #f2f6f8;
   --color-surface: #ffffff;
-  --color-linel: #e4e7eb;
-  --color-ink: #14161a;
-  --color-mutl: #5a6472;
+  --color-linel: #dde9ef;
+  --color-ink: #0e1a20;
+  --color-mutl: #5b6f78;
 
   /* Единственный акцент — фирменный жёлтый с корп-сайта modengy.ru */
   --color-accent: #fdc100;
@@ -75,14 +78,14 @@
   --color-yellow: #fdc100;
   --color-yellow-600: #e0ab00;
   --color-yellow-050: #fff7e0;
-  --color-graphite: #0b0c0e;
-  --color-graphite-600: #14161a;
-  --color-graphite-800: #101216;
-  --color-graphite-900: #08090b;
+  --color-graphite: #0e1a20;
+  --color-graphite-600: #16252d;
+  --color-graphite-800: #122029;
+  --color-graphite-900: #0a141a;
   --color-paper: #ffffff;
-  --color-mist: #f4f5f7;
-  --color-line: #e4e7eb;
-  --color-muted: #5a6472;
+  --color-mist: #f2f6f8;
+  --color-line: #dde9ef;
+  --color-muted: #5b6f78;
   --color-teal: #fdc100;
 
   /* Типографика: только корпоративный Gilroy */

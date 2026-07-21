@@ -1,8 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
-// Типографика «Живого чертежа» (self-host, все с кириллицей):
-// Unbounded — H1/H2, Onest — текст, IBM Plex Mono — данные и маркировки.
-/* Шрифты — только корпоративный Gilroy (локальные @font-face в theme.css) */
+/* Типографика — корпоративный Gilroy (локальные @font-face в theme.css) */
 import '../styles/theme.css';
 
 interface Props {
@@ -33,7 +31,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
     <meta name="theme-color" content="#0e1a20" />
-    <link rel="icon" href="/promo/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/promo/favicon.ico" sizes="any" />
     <slot name="head" />
     <ClientRouter />
   </head>
