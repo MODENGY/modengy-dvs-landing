@@ -7,7 +7,9 @@ import Icon from './Icon.astro';
 interface App { slug: string; title: string; text: string; product: string }
 interface Props { applications: App[]; base: string }
 const { applications, base } = Astro.props;
-const useImg = (i: number) => `${base}img/use${i + 1}.webp`;
+/* Фото узла берём ПО SLUG, а не по индексу: раньше индексная привязка давала
+   чужие снимки (у клапанов — шлицевой вал, у крепежа — втулка). */
+const nodeImg = (slug: string) => `${base}img/case-${slug}-after.webp`;
 
 /* Позиции хотспотов на чертеже (viewBox 0 0 560 640) */
 const HOTSPOTS: Record<string, { x: number; y: number }> = {
@@ -25,7 +27,7 @@ const HOTSPOTS: Record<string, { x: number; y: number }> = {
     <span class="sec-tag sec-tag--dark" data-reveal>Применение</span>
     <h2 class="mt-5 max-w-3xl text-[clamp(28px,3.4vw,44px)]" data-reveal>Где применяется в двигателе</h2>
     <p class="mt-4 max-w-xl text-mutd" data-reveal>
-      Наведите на точку чертежа или карточку узла. Клик — переход к подбору покрытия под этот узел.
+      Наведите на точку чертежа или карточку узла, чтобы подсветить его. Клик — переход к покупке набора.
     </p>
 
     <div class="mt-14 grid items-start gap-12 lg:grid-cols-[1.15fr_1fr]" data-blueprint>
@@ -209,8 +211,8 @@ const HOTSPOTS: Record<string, { x: number; y: number }> = {
         {applications.map((a, i) => (
           <a href="#buy" data-app-card={a.slug} data-reveal
             class="app-card group flex items-center gap-4 p-4">
-            <img transition:name={`app-${a.slug}`} src={useImg(i)} alt={a.title} loading="lazy" decoding="async"
-              width="56" height="56" class="kenburns h-14 w-14 shrink-0 rounded-full border border-lined object-cover" />
+            <img src={nodeImg(a.slug)} alt={a.title} loading="lazy" decoding="async"
+              width="56" height="56" class="h-14 w-14 shrink-0 rounded-full border border-lined object-cover" />
             <div class="min-w-0 flex-1">
               <h3 class="text-[15.5px] font-semibold text-white">{a.title}</h3>
               <p class="mt-0.5 truncate text-[13px] text-mutd">{a.text}</p>

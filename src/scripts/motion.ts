@@ -71,15 +71,29 @@ function setCountersFinal() {
   });
 }
 
-/* Тонкая линия прогресса чтения под шапкой */
+/* Тонкая линия прогресса чтения под шапкой.
+   Passive-слушатель + transform: без scrub и без reflow на каждый тик скролла. */
 function buildProgressRail() {
   const fill = document.querySelector<HTMLElement>('[data-rail-fill]');
   if (!fill) return;
-  gsap.to(fill, {
-    width: '100%',
-    ease: 'none',
-    scrollTrigger: { trigger: document.documentElement, start: 'top top', end: 'bottom bottom', scrub: 0.4 },
-  });
+  fill.style.width = '100%';
+  fill.style.transformOrigin = 'left center';
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    const doc = document.documentElement;
+    const max = doc.scrollHeight - window.innerHeight;
+    const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    fill.style.transform = `scaleX(${p})`;
+  };
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true, signal: ac?.signal });
+  window.addEventListener('resize', onScroll, { passive: true, signal: ac?.signal });
+  update();
 }
 
 /* Шапка: линия-тень при скролле */
@@ -91,13 +105,13 @@ function buildHeaderScroll() {
   onScroll();
 }
 
-/* Плавающий CTA: после 1.5 экрана; прячется у формы */
+/* Плавающий CTA: после 1.5 экрана; прячется у блока покупки */
 function buildFloatingCta() {
   const cta = document.querySelector<HTMLElement>('[data-float-cta]');
   if (!cta) return;
   let past = false;
-  let nearForm = false;
-  const apply = () => cta.classList.toggle('on', past && !nearForm);
+  let nearBuy = false;
+  const apply = () => cta.classList.toggle('on', past && !nearBuy);
   ScrollTrigger.create({
     start: () => window.innerHeight * 1.5,
     onUpdate: (self) => {
@@ -105,14 +119,14 @@ function buildFloatingCta() {
       apply();
     },
   });
-  const quiz = document.querySelector('#buy');
-  if (quiz) {
+  const buySection = document.querySelector('#buy');
+  if (buySection) {
     ScrollTrigger.create({
-      trigger: quiz,
+      trigger: buySection,
       start: 'top 85%',
       end: 'bottom 20%',
       onToggle: (self) => {
-        nearForm = self.isActive;
+        nearBuy = self.isActive;
         apply();
       },
     });

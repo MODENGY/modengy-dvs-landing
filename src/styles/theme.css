@@ -77,10 +77,8 @@
   /* Алиасы для существующей разметки (перекрашивают всё разом) */
   --color-yellow: #fdc100;
   --color-yellow-600: #e0ab00;
-  --color-yellow-050: #fff7e0;
   --color-graphite: #0e1a20;
   --color-graphite-600: #16252d;
-  --color-graphite-800: #122029;
   --color-graphite-900: #0a141a;
   --color-paper: #ffffff;
   --color-mist: #f2f6f8;
@@ -123,7 +121,7 @@ body {
   overflow-x: clip;
 }
 
-/* Museo Sans — заголовки; Roboto — остальной текст */
+/* Заголовки и текст — корпоративный Gilroy */
 h1, h2 {
   font-family: var(--font-display);
   font-weight: 500;
@@ -174,16 +172,16 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 /* Чертёжная сетка на тёмных секциях */
 .blueprint-grid {
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    linear-gradient(rgba(221, 233, 239, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(221, 233, 239, 0.04) 1px, transparent 1px);
   background-size: 72px 72px;
 }
 /* ...и на светлых — ещё тоньше, чтобы «пустое» стало листом чертежа */
 .blueprint-grid-l {
   position: relative;
   background-image:
-    linear-gradient(rgba(20, 22, 26, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(20, 22, 26, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(14, 26, 32, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14, 26, 32, 0.03) 1px, transparent 1px);
   background-size: 72px 72px;
 }
 
@@ -218,7 +216,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
   pointer-events: none;
   user-select: none;
 }
-.sheet-index.d { color: #fff; opacity: 0.04; }
+.sheet-index.d { color: #dde9ef; opacity: 0.04; }
 
 /* Размерная «линейка» по краю светлой секции */
 .rule-ticks {
@@ -290,7 +288,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
 }
 .card-heat:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 30px rgba(20, 22, 26, 0.06);
+  box-shadow: 0 8px 30px rgba(14, 26, 32, 0.06);
 }
 .card-heat:hover::before { background: var(--color-accent); left: 8px; right: 8px; }
 .card-heat .icon-pad {
@@ -329,29 +327,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, [tabindex]:focus-vis
    ------------------------------------------------------------ */
 html.js-ready [data-reveal] { opacity: 0; }
 
-.line { display: block; overflow: hidden; }
+/* Построчная разбивка H1 */
+.line { display: block; }
 .line > * { display: inline-block; }
-.word { display: inline-block; overflow: hidden; vertical-align: top; }
-.word-inner { display: inline-block; }
-
-.kenburns { transition: transform 0.6s ease-out; }
-.group:hover .kenburns { transform: scale(1.05); }
-
-/* ------------------------------------------------------------
-   Кинетическая mono-строка (одна, дисциплинированная)
-   ------------------------------------------------------------ */
-.kinetic-line {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(2.4rem, 6.5vw, 6rem);
-  line-height: 1.05;
-  white-space: nowrap;
-  color: transparent;
-  -webkit-text-stroke: 1.2px rgba(255, 255, 255, 0.22);
-  will-change: transform;
-  user-select: none;
-}
-.kinetic-fill { color: var(--color-accent); -webkit-text-stroke: 0; }
 
 /* ------------------------------------------------------------
    Курсор-«прицел» (десктоп)
@@ -400,7 +378,7 @@ html.js-ready [data-reveal] { opacity: 0; }
 /* Конвейерная лента линейки */
 .belt {
   position: relative;
-  background: linear-gradient(180deg, #191c21 0%, #0b0c0e 100%);
+  background: linear-gradient(180deg, #16252d 0%, #0e1a20 100%);
   box-shadow: inset 0 6px 14px rgba(0, 0, 0, 0.45);
   border-radius: 8px;
   overflow: hidden;
@@ -408,7 +386,7 @@ html.js-ready [data-reveal] { opacity: 0; }
 .belt::before {
   content: "";
   position: absolute; inset: 0;
-  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0 2px, transparent 2px 30px);
+  background: repeating-linear-gradient(90deg, rgba(221, 233, 239, 0.06) 0 2px, transparent 2px 30px);
 }
 .belt::after {
   content: "";
@@ -434,23 +412,11 @@ html.js-ready [data-reveal] { opacity: 0; }
 }
 .float-cta.on { opacity: 1; transform: none; pointer-events: auto; }
 
-/* Штамп успеха */
-.stamp {
-  display: inline-block;
-  border: 2px dashed var(--color-accent);
-  border-radius: 10px;
-  padding: 14px 22px;
-  font-family: var(--font-mono);
-  letter-spacing: 0.06em;
-  color: var(--color-accent);
-  transform: rotate(-2deg);
-}
-
 /* ------------------------------------------------------------
    prefers-reduced-motion: всё статично и видимо
    ------------------------------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
   html.js-ready [data-reveal] { opacity: 1 !important; transform: none !important; }
   .chart-pulse, .bp-hotspot circle.halo { animation: none; }
-  .kenburns, .mos-layer, .card-heat, .app-card { transition: none; }
+  .mos-layer, .card-heat, .app-card { transition: none; }
 }
