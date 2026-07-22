@@ -474,16 +474,6 @@ const effectCards = [
         ))}
       </div>
 
-      <!-- ссылки на площадки с отзывами -->
-      <div class="mt-8 flex flex-wrap items-center gap-3" data-reveal>
-        <span class="font-mono text-[12px] uppercase tracking-[0.08em] text-mutl">Отзывы на площадках:</span>
-        {dvs.reviewLinks.map((l) => (
-          <a href={l.href} target="_blank" rel="noopener"
-            class="inline-flex items-center gap-2 rounded-full border border-linel px-4 py-2 text-[14px] font-medium text-ink transition-colors hover:border-accent">
-            {l.label} <Icon name="arrow-right" size={14} class="rotate-[-45deg]" />
-          </a>
-        ))}
-      </div>
     </div>
   </section>
 
