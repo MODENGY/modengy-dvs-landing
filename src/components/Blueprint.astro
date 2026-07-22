@@ -11,14 +11,18 @@ const { applications, base } = Astro.props;
    чужие снимки (у клапанов — шлицевой вал, у крепежа — втулка). */
 const nodeImg = (slug: string) => `${base}img/case-${slug}-after.webp`;
 
-/* Позиции хотспотов на чертеже (viewBox 0 0 560 640) */
-const HOTSPOTS: Record<string, { x: number; y: number }> = {
-  zaslonki: { x: 96, y: 150 },   // дроссельная заслонка во впуске
-  klapany: { x: 212, y: 148 },   // стержень впускного клапана
-  krepezh: { x: 372, y: 118 },   // болт ГБЦ
-  porshni: { x: 191, y: 318 },   // юбка поршня
-  vkladyshi: { x: 250, y: 408 }, // вкладыш нижней головки шатуна
-  shlicy: { x: 432, y: 486 },    // шлицевой хвостовик коленвала
+/* Позиции хотспотов на чертеже (viewBox 0 0 560 640).
+   У подшипников скольжения две точки: распредвал (сверху) и коленвал (снизу). */
+const HOTSPOTS: Record<string, Array<{ x: number; y: number }>> = {
+  zaslonki: [{ x: 96, y: 150 }],   // дроссельная заслонка во впуске
+  klapany: [{ x: 212, y: 148 }],   // стержень впускного клапана
+  krepezh: [{ x: 372, y: 118 }],   // болт ГБЦ
+  porshni: [{ x: 191, y: 318 }],   // юбка поршня
+  vkladyshi: [
+    { x: 330, y: 112 },            // опора распределительного вала
+    { x: 271, y: 494 },            // коренной подшипник коленвала
+  ],
+  shlicy: [{ x: 432, y: 486 }],    // шлицевой хвостовик коленвала
 };
 ---
 
@@ -187,22 +191,17 @@ const HOTSPOTS: Record<string, { x: number; y: number }> = {
             <path class="callout-line" d="M305 424 H414" />
             <circle class="callout-dot" cx="305" cy="424" r="2.6" />
             <text x="420" y="428">ВКЛАДЫШ · MoS₂</text>
-            <path class="callout-line" d="M330 131 H414" />
-            <circle class="callout-dot" cx="330" cy="131" r="2.6" />
-            <text x="420" y="135">ШТОК КЛАПАНА</text>
           </g>
 
           <!-- хотспоты -->
-          {applications.map((a) => {
-            const p = HOTSPOTS[a.slug];
-            if (!p) return null;
-            return (
+          {applications.map((a) =>
+            (HOTSPOTS[a.slug] || []).map((p) => (
               <a href="#buy" class="bp-hotspot" data-hotspot={a.slug} aria-label={a.title}>
                 <circle class="halo" cx={p.x} cy={p.y} r="10" />
                 <circle class="core" cx={p.x} cy={p.y} r="5.5" />
               </a>
-            );
-          })}
+            ))
+          )}
         </svg>
       </figure>
 
