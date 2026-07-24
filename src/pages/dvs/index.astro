@@ -7,7 +7,6 @@ import Blueprint from '../../components/Blueprint.astro';
 import Icon from '../../components/Icon.astro';
 import VideoCard from '../../components/VideoCard.astro';
 import Cases from '../../components/Cases.astro';
-import ReviewFloat from '../../components/ReviewFloat.astro';
 import { dvs } from '../../data/dvs';
 
 const base = import.meta.env.BASE_URL; // '/promo/'
@@ -29,7 +28,7 @@ const passport = [
 const painIcons = ['flame', 'gauge', 'thermometer', 'waves'];
 
 const why = [
-  { icon: 'timer', n: '9', suffix: '+', t: 'лет на рынке', d: 'Самая широкая в РФ линейка серийных антифрикционных твердосмазочных покрытий.', wide: true },
+  { icon: 'timer', n: '9', suffix: '+', t: 'лет на рынке', d: 'Самая широкая в РФ линейка серийных антифрикционных твердосмазочных покрытий.', wide: false },
   { icon: 'flask', n: '2', suffix: '', t: 'собственные лаборатории', d: 'R&D и аккредитованные испытания: трение (ASTM G99), износ, коррозия (ISO 9227), резьба (ГОСТ ISO 16047).', wide: false },
   { icon: 'globe', n: '12', suffix: '+', t: 'отраслей применения', d: 'Авиакосмос, ОПК, нефтегаз, робототехника, ЖД, атомная энергетика, металлургия.', wide: false },
   { icon: 'swap', n: '', suffix: '', t: 'Импортозамещение', d: 'Прямые аналоги Molykote и других импортных покрытий — со склада в РФ.', wide: false },
@@ -191,11 +190,11 @@ const effectCards = [
   </section>
 
   <!-- ======================= МАТЕРИАЛ: СУХАЯ СМАЗКА ======================= -->
-  <section id="material" class="grain relative overflow-hidden bg-bg1 py-24 text-white md:py-32">
-    <div class="relative mx-auto grid max-w-[1280px] items-center gap-14 px-5 md:grid-cols-2 md:px-8">
+  <section id="material" class="grain relative overflow-hidden bg-bg1 py-20 text-white md:py-24">
+    <div class="relative mx-auto grid max-w-[1280px] items-start gap-14 px-5 md:grid-cols-2 md:px-8">
       <div>
         <span class="sec-tag sec-tag--dark" data-reveal>Материал</span>
-        <p class="mt-5 text-[16.5px] leading-relaxed text-mutd" data-reveal>{dvs.how.lead}</p>
+        <p class="mt-5 text-[19px] leading-relaxed text-white/90 md:text-[21px]" data-reveal>{dvs.how.lead}</p>
 
         <!-- состав — чипы -->
         <div class="mt-6 flex flex-wrap gap-2.5" data-reveal="left">
@@ -268,12 +267,12 @@ const effectCards = [
   </section>
 
   <!-- ======================= ПАСПОРТ ПОКРЫТИЯ ======================= -->
-  <section id="specs" class="blueprint-grid-l relative overflow-hidden bg-surface py-24 md:py-32">
+  <section id="specs" class="blueprint-grid-l relative overflow-hidden bg-surface py-20 md:py-24">
     <span class="sheet-index" aria-hidden="true">01</span>
     <div class="relative mx-auto max-w-[1280px] px-5 md:px-8">
       <span class="sec-tag" data-reveal>Паспорт покрытия</span>
 
-      <div class="mt-10 grid items-start gap-14 lg:grid-cols-[1fr_440px]">
+      <div class="mt-8 grid items-start gap-14 lg:grid-cols-[1fr_440px]">
         <div>
           {passport.map((row) => (
             <div class="grid grid-cols-[1fr_auto] items-baseline gap-6 border-b border-linel py-5" data-reveal>
@@ -281,7 +280,7 @@ const effectCards = [
                 <div class="font-medium text-ink">{row.param}</div>
                 {row.note && <div class="mt-0.5 font-mono text-[12px] uppercase tracking-[0.06em] text-mutl">{row.note}</div>}
               </div>
-              <div class="text-right font-mono text-xl font-medium text-ink md:text-2xl">{row.value}</div>
+              <div class={`text-right font-mono font-medium text-ink ${row.value.length > 20 ? 'text-base md:text-lg' : 'text-xl md:text-2xl'}`}>{row.value}</div>
             </div>
           ))}
           <p class="mt-4 font-mono text-[12px] uppercase tracking-[0.06em] text-mutl">
@@ -413,7 +412,7 @@ const effectCards = [
       <h2 class="mt-5 max-w-3xl text-[clamp(28px,3.4vw,44px)]" data-reveal>Видеоинструкция по нанесению</h2>
       <p class="mt-4 max-w-xl text-mutd" data-reveal>Как покрытие наносится на реальные детали двигателя — от набора до заводского применения.</p>
 
-      <div class="mt-12 grid gap-6 lg:grid-cols-[1.5fr_1fr]">
+      <div class="mt-12 grid items-start gap-6 lg:grid-cols-[1.4fr_1fr]">
         <div data-reveal>
           <VideoCard id={dvs.videos.main.id} title={dvs.videos.main.title} label="Инструкция" />
           <!-- под главным видео: что понадобится для нанесения -->
@@ -435,10 +434,19 @@ const effectCards = [
             ))}
           </div>
         </div>
-        <div class="grid gap-6 sm:grid-cols-3 lg:grid-cols-1">
+        <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-1">
           {dvs.videos.process.map((v) => (
             <div data-reveal><VideoCard id={v.id} title={v.title} /></div>
           ))}
+          <!-- добор колонки: ссылка на канал, чтобы блок не пустовал -->
+          <a href="https://rutube.ru/channel/24965636/" target="_blank" rel="noopener" data-reveal
+            class="flex items-center justify-between gap-4 rounded-[16px] border border-lined bg-white/[0.03] p-5 transition-colors hover:border-accent/50">
+            <div>
+              <div class="text-[15px] font-semibold text-white">Все видео MODENGY</div>
+              <div class="mt-0.5 text-[13px] text-mutd">инструкции, испытания, применение</div>
+            </div>
+            <span class="shrink-0 text-accent"><Icon name="arrow-right" size={18} /></span>
+          </a>
         </div>
       </div>
     </div>
@@ -478,7 +486,7 @@ const effectCards = [
   </section>
 
   <!-- ======================= FAQ ======================= -->
-  <section class="blueprint-grid-l relative overflow-hidden bg-surface py-24 md:py-32">
+  <section class="blueprint-grid-l relative overflow-hidden bg-surface py-16 md:py-20">
     <span class="sheet-index" aria-hidden="true">10</span>
     <div class="relative mx-auto max-w-3xl px-5 md:px-8">
       <span class="sec-tag" data-reveal>Вопросы</span>
@@ -543,8 +551,6 @@ const effectCards = [
     </div>
   </footer>
 
-  <!-- Плавающая карточка «Оцените MODENGY» -->
-  <ReviewFloat />
 
   <style is:global>
     /* Сдержанные hover-акценты карточек */
